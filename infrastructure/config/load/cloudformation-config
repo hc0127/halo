@@ -1,0 +1,6 @@
+Region=eu-west-2
+MasterTemplate=master-web.yaml
+CFS3Bucket=halo-load-cf-1616621088
+StackName=haloloadwebstack
+StackPolicy=stack-policy.json
+CreationFailureAction=DO_NOTHING

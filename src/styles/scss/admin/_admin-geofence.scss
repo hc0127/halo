@@ -1,0 +1,42 @@
+.admin-geofence {
+  display: flex;
+
+  .admin-field__input {
+    max-width: 300px;
+  }
+
+  &__tip {
+    font-style: italic;
+    margin-left: 24px;
+  }
+
+  &__field-and-buttons {
+    flex: 1;
+    padding: 0px 24px;
+    position: relative;
+    .admin-button {
+      margin-top: 16px;
+    }
+  }
+
+  &__bottom-buttons {
+    position: absolute;
+    bottom: 0px;
+    left: 24px;
+
+    .admin-button {
+      margin-right: 24px;
+    }
+  }
+
+  .admin-geofence-editor {
+    height: 400px;
+    width: 400px;
+    position: relative;
+    z-index: 10;
+  }
+
+  & + & {
+    margin-top: 32px;
+  }
+}

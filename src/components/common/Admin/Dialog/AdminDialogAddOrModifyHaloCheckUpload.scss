@@ -1,0 +1,63 @@
+.check-upload {
+  margin: .5rem 0 1.5rem;
+
+  &-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 180px;
+    border: 2px dashed $color-grey-med;
+    border-radius: 4px;
+    transition: border-color .2s ease, color .2s ease;
+    cursor: pointer;
+    user-select: none;
+    color: $color-grey-med;
+    background-color: $light-gray;
+    font-weight: normal;
+    font-size: .8rem;
+
+    &:hover {
+      border-color: $color-blue;
+      color: $color-blue;
+    }
+  }
+
+  &-result {
+    display: block;
+    position: relative;
+    height: 100px;
+    width: 120px;
+    border: 2px solid $color-grey-dark;
+    border-radius: 4px;
+    transition: border-color .2s ease;
+    cursor: pointer;
+    user-select: none;
+    background: $light-gray no-repeat center center / cover;
+
+    &::after {
+      display: flex;
+      content: "Delete";
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      height: 24px;
+      padding: 0 .5rem;
+      border-radius: 24px;
+      transition: background-color .2s ease;
+      color: white;
+      background-color: $color-grey-dark;
+      font-size: .8rem;
+    }
+
+    &:hover {
+      border-color: $color-blue;
+
+      &::after {
+        background-color: $color-blue;
+      }
+    }
+  }
+}

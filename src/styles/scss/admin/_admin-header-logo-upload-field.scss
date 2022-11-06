@@ -1,0 +1,30 @@
+.admin-header-logo-upload-field {
+  display: flex;
+  width: 100%;
+  margin: 2px;
+  // this is because we need the header to be 100% width
+  max-width: calc(100vw - 200px - 90px - 64px - 2px);
+
+  > div:first-child {
+    position: relative;
+    flex: 1;
+    margin-right: 16px;
+    .admin-button {
+      position: absolute;
+      right: 10%;
+      top: 2px;
+      width: auto;
+      background-color: #e6e6e6;
+      z-index: 3;
+      cursor: pointer;
+      font-size: 24px;
+      color: #526173;
+      z-index: 0;
+    }
+  }
+
+  &__header-container {
+    overflow: hidden;
+    flex: 2;
+  }
+}

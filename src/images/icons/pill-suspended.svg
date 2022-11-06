@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="95" height="25" viewBox="0 0 95 25">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="95" height="25" fill="#FF4000" rx="12.5"/>
+        <text fill="#FFF" font-family="ClearSans, Clear Sans" font-size="14">
+            <tspan x="12.541" y="17">Suspended</tspan>
+        </text>
+    </g>
+</svg>

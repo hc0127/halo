@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy providing access to SES
+Parameters:
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+  Environment:
+    Description: Environment
+    Type: String
+Outputs:
+  SESManagedPolicy:
+    Value: !Ref SESManagedPolicy
+Resources:
+# #### SES Policy
+# Allowing send access to SES, and getting quota as django-ses uses this for rate limiting
+# ####
+  SESManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: !Sub "Stmt${Project}${Environment}SES"
+          Effect: Allow
+          Action:
+            - ses:SendEmail
+            - ses:SendRawEmail
+            - ses:GetSendQuota
+          Resource:
+          - "*"

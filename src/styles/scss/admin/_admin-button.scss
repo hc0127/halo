@@ -1,0 +1,108 @@
+.admin-button {
+  $blue: #3a4bc1;
+  $red: #ff4000;
+  $color-disabled: #ced1d6;
+  $hover-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+
+  font-size: 14px;
+  outline: none;
+  width: 128px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: $blue;
+  color: white;
+  border: 2px solid $blue;
+  transition: box-shadow 300ms, background-color 300ms, border-color 300ms;
+
+  &:disabled {
+    background-color: $color-disabled;
+    border-color: $color-disabled;
+    cursor: not-allowed;
+  }
+
+  .Loading {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  &--secondary {
+    background-color: $red;
+    border-color: $red;
+  }
+
+  &--no-background {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  &--hollow {
+    background-color: transparent;
+    color: $blue;
+  }
+
+  &--secondary#{&}--hollow {
+    color: $red;
+  }
+
+  .admin-title + & {
+    margin-top: 16px;
+  }
+
+  // states
+  &--primary:not(&--hollow) {
+    &:hover {
+      box-shadow: $hover-shadow;
+    }
+    &:active {
+      background-color: darken($blue, 10%);
+      border-color: darken($blue, 10%);
+    }
+    &:hover:active {
+      box-shadow: none;
+    }
+  }
+
+  &--secondary:not(&--hollow) {
+    &:hover {
+      box-shadow: $hover-shadow;
+    }
+    &:active {
+      background-color: darken($red, 10%);
+      border-color: darken($red, 10%);
+    }
+    &:hover:active {
+      box-shadow: none;
+    }
+  }
+
+  &--primary#{&}--hollow {
+    &:hover {
+      background-color: rgba($blue, 0.12);
+    }
+    &:active {
+      background-color: rgba($blue, 0.3);
+    }
+  }
+
+  &--secondary#{&}--hollow {
+    &:hover {
+      background-color: rgba($red, 0.12);
+    }
+    &:active {
+      background-color: rgba($red, 0.3);
+    }
+  }
+
+  &--link {
+    height: unset;
+    width: unset;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid $color-blue;
+    border-radius: 0;
+    color: $color-blue;
+    background-color: transparent;
+    font-weight: bold;
+    text-align: left;
+  }
+}

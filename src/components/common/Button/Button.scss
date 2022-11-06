@@ -1,0 +1,97 @@
+.Button {
+  outline: none;
+  background: none;
+  border: none;
+  font-size: 14px;
+  padding: 0;
+  transition: background-color 0.25s ease-out;
+  border-radius:3px;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.Button--outline {
+  border: 1px solid $color-grey;
+  padding: $padding-sm;
+  border-radius: $base-border-radius;
+}
+.Button--invisible {
+  border: none;
+  //background: rgba(0, 255, 255, 0.2);
+  width: 100%;
+}
+
+.Button--close{
+  background-color: none;
+  width:38px;
+  height:38px;
+  font-size:20px;
+  color:$color-black;
+  border-radius:50%;
+  display:block;
+  margin:$margin-md;
+  &:not([disabled]):hover {
+  //  color:white;
+    background-color: $color-light-grey;
+  }
+
+}
+
+.Button--np {
+}
+
+.Button--xs {
+  padding: 0;
+  span {
+    font-size: 10px;
+  }
+}
+.Button--sm {
+  border-radius: 2px;
+  padding: $padding-sm;
+  span {
+    font-size: 12px;
+  }
+}
+.Button--md {
+  border-radius: 4px;
+  padding: $padding-sm $padding-md $padding-sm $padding-md;
+  span {
+    font-size: 16px;
+  }
+}
+.Button--lg {
+  border-radius: 8px;
+  padding: $padding-md;
+  span {
+    font-size: 20px;
+  }
+}
+.Button--primary {
+  background-color: $primary-button-color;
+  &:not([disabled]):hover {
+    background-color: darken($primary-button-color, 10%);
+    span {
+      color: darken(white, 10%);
+    }
+  }
+  span {
+    color: white;
+  }
+}
+.Button--secondary {
+  background-color: $secondary-button-color;
+  padding: $padding-sm;
+  border-radius: $base-border-radius;
+  &:not([disabled]):hover {
+    background-color: darken($secondary-button-color, 10%);
+    span {
+      color: darken(white, 10%);
+    }
+  }
+  span {
+    color: white;
+  }
+}

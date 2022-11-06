@@ -1,0 +1,15 @@
+$grey: #99aabe;
+
+.capacity-overview {
+  width: 60%;
+  display: inline-block;
+  float: left;
+  margin-left: 23px;
+
+  &__report-header {
+    font-size: 16px;
+    color: $grey;
+    padding-bottom: 8px;
+    border-bottom: 2px solid $grey;
+  }
+}

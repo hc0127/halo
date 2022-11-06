@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy defining everything needed to initialise a CodeDeploy deployment. Used by devs or CI.
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  CodeDeployBucket:
+    Description: Name of bucket, NOT arn
+    Type: String
+
+  CodeDeployApplicationName:
+    Description: Application name
+    Type: String
+
+  CodeDeployDeploymentGroupName:
+    Description: Name of deployment group
+    Type: String
+
+Outputs:
+
+  ManagedPolicy:
+    Value: !Ref CodeDeployDeployManagedPolicy
+
+Resources:
+
+# #### CodeDeploy Deploy Managed Policy
+# I heard you like deploys..
+# This policy allows an IAM user to upload an application .zip, create the application revision and trigger a deployment
+# ####
+  CodeDeployDeployManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - codedeploy:GetDeploymentConfig
+            Resource:
+              - !Sub "arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentconfig:*"
+          - Effect: Allow
+            Action:
+              - codedeploy:RegisterApplicationRevision
+              - codedeploy:GetApplicationRevision
+            Resource:
+              - !Sub "arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:application:${CodeDeployApplicationName}"
+          - Effect: Allow
+            Action:
+              - codedeploy:CreateDeployment
+            Resource:
+              - !Sub "arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${CodeDeployApplicationName}/${CodeDeployDeploymentGroupName}"
+          - Effect: Allow
+            Sid: !Sub "${Project}${Environment}cdds3"
+            Action:
+              - s3:PutObject
+            Resource:
+              - !Sub "arn:aws:s3:::${CodeDeployBucket}/*"

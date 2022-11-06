@@ -1,0 +1,21 @@
+.admin-loading-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: 2000;
+  background-color: rgba(216, 216, 216, 0.8);
+  color: #3a4bc1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.05s, opacity 0.05s;
+  &--open {
+    visibility: visible;
+    opacity: 1;
+  }
+}

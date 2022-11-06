@@ -1,0 +1,15 @@
+.card {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 8px;
+
+  &__container {
+    background-color: white;
+    padding: 8px 16px;
+
+    border-radius: 6px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: calc(100% - 32px);
+    height: calc(100% - 16px);
+  }
+}

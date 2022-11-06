@@ -1,0 +1,120 @@
+@import "./admin/admin-button";
+@import "./admin/admin-card";
+@import "./admin/admin-field";
+@import "./admin/admin-page";
+@import "./admin/admin-switch";
+@import "./admin/admin-title";
+@import "./admin/admin-sidebar";
+@import "./admin/admin-tab-card";
+@import "./admin/admin-geofence";
+@import "./admin/admin-staff-selector";
+@import "./admin/admin-temp-name";
+@import "./admin/admin-limit-card";
+@import "./admin/admin-dialog";
+@import "./admin/admin-client-selector";
+@import "./admin/admin-main-view";
+@import "./admin/admin-client-limit-display";
+@import "./admin/admin-pin-dropdown";
+@import "./admin/admin-loading-overlay";
+@import "./admin/admin-notification";
+@import "./admin/admin-save-panel";
+@import "./admin/admin-save-panel-conflict-handler";
+@import "./admin/admin-header-logo-upload-field";
+@import "./admin/admin-form";
+@import "./admin/admin-document-selector";
+
+.admin-user {
+  &__suspended-container {
+    position: absolute;
+    right: 45px;
+    top: 20px;
+
+    .admin-client-selector + & {
+      top: 85px;
+    }
+  }
+  &__password-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    > :first-child {
+      width: 100%;
+      margin-right: 16px;
+    }
+    > :last-child {
+      margin-top: 23px;
+    }
+  }
+}
+
+.admin-client-details-page {
+  &__client-info {
+    &__content {
+      display: flex;
+
+      > .admin-card__body {
+        margin-right: 16px;
+        flex-grow: 1;
+      }
+    }
+  }
+
+  &__limit-container {
+    display: flex;
+    > .admin-card__body:first-child {
+      margin-right: 16px;
+    }
+  }
+}
+
+.react-datepicker-popper {
+  min-width: 314px;
+}
+
+.admin-feature-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.admin-incident-types-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.custom-incident {
+  min-width: 400px;
+
+  td:last-child {
+    padding: 1px;
+    vertical-align: top;
+  }
+}
+
+.zone-list {
+  td:last-child {
+    padding: 1px;
+    vertical-align: top;
+  }
+}
+
+.admin-centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-button-container{
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.admin-back-button {
+  color: white;
+  font-size: 14px;
+  background-color: transparent;
+  border-color: transparent;
+}

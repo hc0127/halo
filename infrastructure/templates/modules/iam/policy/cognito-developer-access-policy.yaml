@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy allowing an API backend to act as a federated identity provider for Cognito
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  IdentityPoolId:
+    Description: Cognito Identity Pool Id
+    Type: String
+
+Outputs:
+
+  Arn:
+    Value: !Ref CognitoDeveloperAccessPolicy
+
+Resources:
+
+# #### Cognito Developer Access policy
+# Allowing provisioning of Open ID tokens for cognito identities
+# ####
+  CognitoDeveloperAccessPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - cognito-identity:GetOpenIdTokenForDeveloperIdentity
+              - cognito-identity:LookupDeveloperIdentity
+              - cognito-identity:MergeDeveloperIdentities
+              - cognito-identity:UnlinkDeveloperIdentity
+            Resource: !Sub "arn:aws:cognito-identity:${AWS::Region}:${AWS::AccountId}:identitypool/${IdentityPoolId}"

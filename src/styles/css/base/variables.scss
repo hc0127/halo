@@ -1,0 +1,69 @@
+// Font weights
+$light: 100;
+$regular: 400;
+$bold: 600;
+// Font sizes
+$font-size-sm: 12px;
+$font-size-md: 14px;
+$font-size-xmd: 16px;
+$font-size-lg: 24px;
+$font-size-xl: 50px;
+// Base Font
+$base-font-family: sans-serif;
+$base-font-weight: $regular;
+$base-font-size: 13px;
+$base-line-height: 1.4;
+//Colors
+$color-white: #fff;
+$color-offwhite: #f8f8f8;
+$color-offwhite-hover: #eaeaea;
+$color-black: #444444;
+$color-blue: #394fbf;
+$color-green: #2ad587;
+$color-yellow-bright: #f8e71c;
+$color-yellow: #ffbf00;
+$color-grey: #d3d3d3;
+$color-grey-med: #b7b7b7;
+$color-grey-dark: #4a4a4a;
+$color-red: #00b2cb;
+$color-light-grey: #eff1f0;
+$color-light-grey-alt: #fafafa;
+$color-light-blue: #616fcd;
+$color-light-grey-blue: #d6dce6;
+$color-blue-deep: #002c7c;
+$color-text-black: #526173;
+$color-text-washed-blue: #75889f;
+$color-error: #cc0000;
+$color-purple: #551a8b;
+//Buttonz
+$primary-button-color: $color-blue;
+$secondary-button-color: $color-grey;
+// Widths + Heights
+$header-height-lg: 80px;
+$header-height-md: 60px;
+$header-height-sm: 30px;
+// Margins + Paddings
+$padding-xs: 5px;
+$padding-sm: 10px;
+$padding-md: 20px;
+$padding-lg: 30px;
+$padding-xl: 40px;
+$margin-xs: 5px;
+$margin-sm: 10px;
+$margin-md: 20px;
+$margin-lg: 30px;
+$margin-xl: 40px;
+// Borders
+$base-border-radius: 6px;
+$base-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+// Depth
+$z-back: 0;
+$z-backmid: 100;
+$z-mid: 200;
+$z-frontmid: 300;
+$z-front: 400;
+$hamburger-layer-width: 40px;
+$hamburger-layer-height: 4px;
+$hamburger-layer-spacing: 6px;
+$hamburger-layer-color: $color-grey-dark;
+$hamburger-padding-x: 15px;

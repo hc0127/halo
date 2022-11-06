@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: An instance profile that offers no permissions from it's IAM role
+Parameters:
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+  Environment:
+    Description: Environment
+    Type: String
+Outputs:
+  InstanceProfile:
+    Description: The instance profile created, with no permissions
+    Value: !Ref InstanceProfile
+Resources:
+  InstanceProfile:
+    DependsOn: InstanceProfileRole
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref InstanceProfileRole
+  InstanceProfileRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: !Sub "${Project}${Environment}NullInstanceProfilePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # A policy must have at least one statement
+              # So we'll deny access for a very obscure action
+              # A bit hacky I know, but I can't find a way to have empty policies
+              # And a "null" instance profile means we can use the same EC2 config
+              # Whether we are using IAM user w/ access key or just instance profile
+              - Effect: Deny
+                Action: ec2:DescribeFpgaImages
+                Resource: "*"

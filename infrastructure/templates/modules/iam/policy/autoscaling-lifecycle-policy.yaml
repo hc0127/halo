@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy allowing the completion of autoscaling lifecycle actions
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+Outputs:
+
+  ManagedPolicy:
+    Value: !Ref AutoScalingLifecycleManagedPolicy
+
+Resources:
+
+# #### AutoScalingLifeCycle Policy
+# Allows the completion of an autoscaling lifecycle action for an instance
+# So instance can mark itself as "finished" to continue termination for example
+# ####
+  AutoScalingLifecycleManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - autoscaling:CompleteLifecycleAction
+            Resource:
+              # * here because we need to add this policy to a launch configuration, which the ASG itself depends on. (dependency loop)
+              - "*"

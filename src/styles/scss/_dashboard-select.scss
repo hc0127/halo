@@ -1,0 +1,22 @@
+.dashboard-select {
+  color: #526173;
+  flex: 1;
+  max-width: 270px;
+
+  & &__control {
+    border: 1px solid rgba(82, 97, 115, 0.2);
+    border-radius: 20px;
+  }
+
+  &__indicator-separator {
+    display: none;
+  }
+
+  & &__dropdown-indicator {
+    color: rgba(82, 97, 115, 0.2);
+  }
+
+  & &__single-value {
+    color: #526173;
+  }
+}

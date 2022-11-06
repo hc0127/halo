@@ -1,0 +1,86 @@
+.admin-dialog-document {
+  min-width: 850px;
+  width: auto;
+
+  .admin-form {
+    margin: 2rem 0;
+    padding: 0;
+
+    &__row {
+      width: 90%;
+      margin-left: 20px;
+      margin-right: 20px;
+
+      .admin-form__column {
+      gap: 20px;
+      }
+    }
+
+    .checkbox {
+      padding-left: 80px;
+      padding-top: 20px;
+      color: #a4acb5;
+
+
+      .list {
+        margin-top: 20px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+
+        .item {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 15px;
+
+          label {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .right-control {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+
+      .date {
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+
+        .label{
+          margin-top: 8px;
+        }
+
+        .admin-field{
+          width: 150px;
+
+          .icon {
+            top: 7px;
+            right: 4px;
+          }
+        }
+      }
+
+      .mandatory {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 70px;
+      }
+
+      .button {
+        margin-top: 20px;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 40px;
+      }
+    }
+  }
+}

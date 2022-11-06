@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: An instance profile that offers access to AWS APIs
+Parameters:
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+  Environment:
+    Description: Environment
+    Type: String
+  ManagedPolicyArns:
+    Description: List of managed policy arns to attach to the role
+    Type: CommaDelimitedList
+Outputs:
+  InstanceProfile:
+    Description: The instance profile created, with role and associated permissions
+    Value: !Ref InstanceProfile
+Resources:
+# #### Instance profile
+# The profile has a role attached which contains policies
+# This allows the EC2 instance to have baked in AWS permissions
+# ####
+  InstanceProfile:
+    DependsOn: InstanceProfileRole
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref InstanceProfileRole
+  InstanceProfileRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns: !Ref ManagedPolicyArns

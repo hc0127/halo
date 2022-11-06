@@ -1,0 +1,73 @@
+.EditableField {
+  display: flex;
+  justify-content: flex-start;
+  width: calc(100% - 34px);
+
+  img {
+    position: relative;
+    bottom: -14px;
+  }
+
+  &__Value {
+    font-weight: bold;
+    font-size: 58px;
+    line-height: 54px;
+    position: relative;
+    top: 1px;
+    border-bottom: 2px solid transparent;
+    height: 54px;
+    margin-right: 2px;
+    display: inline-block;
+
+    @media screen and (max-width: 1600px) {
+      font-size: 2.7vw;
+    }
+    @media screen and (max-width: 1350px) {
+      font-size: 2vw;
+    }
+  }
+
+  &__Edit {
+    font-weight: bold;
+    font-size: 44px;
+    background-color: $color-blue-deep;
+    border: none;
+    padding: 3px 0 3px 5px;
+    height: 54px;
+    width: 158px;
+    border-bottom: 2px solid $color-green;
+    outline: none;
+
+    @media screen and (max-width: 1600px) {
+      font-size: 2.7vw;
+    }
+
+    @media screen and (max-width: 1350px) {
+      font-size: 2vw;
+    }
+  }
+
+  & &__Edit {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .EditableField__ImageContainer {
+    position: relative;
+
+    img {
+      position: absolute;
+      padding: 2px 6px;
+      height: 22px;
+      width: 22px;
+      cursor: pointer;
+
+      &.up {
+        top: 0px;
+      }
+      &.down {
+        bottom: 0px;
+      }
+    }
+  }
+}

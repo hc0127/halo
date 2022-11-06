@@ -1,0 +1,44 @@
+.Button.add-item-button {
+  $basecolor: #3a4bc1;
+
+  float: right;
+  padding: 7px 9px 5px 24px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  line-height: 20px;
+  position: relative;
+  top: -3px;
+  &:link,
+  :visited {
+    background-color: $basecolor;
+  }
+  &:hover,
+  :active {
+    background-color: darken($basecolor, 10%);
+    color: #f0f0f0;
+  }
+  i {
+    font-style: normal;
+    background-color: yellow;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    line-height: 15px;
+    top: 8px;
+    left: 5px;
+    border-radius: 10px;
+    text-align: center;
+    color: #3a4bc1;
+  }
+}
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.muted {
+  color: $color-grey-med;
+}

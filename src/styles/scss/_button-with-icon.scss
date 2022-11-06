@@ -1,0 +1,145 @@
+$blue: #3a4bc1;
+$red: #ff4000;
+$color-disabled: #ced1d6;
+$hover-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+
+.button-with-icon {
+  outline: none;
+  border: none;
+  padding: 8px 15px 8px 9px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  width: 128px;
+  transition: box-shadow 300ms, background-color 300ms, border-color 300ms;
+
+  &--primary {
+    color: #fff;
+    border: 2px solid $blue;
+    background-color: $blue;
+  }
+
+  &--primary#{&}--hollow {
+    color: $blue;
+  }
+
+  &--secondary {
+    border: 2px solid $red;
+    background-color: $red;
+    color: #fff;
+  }
+
+  &--secondary#{&}--hollow {
+    color: $red;
+  }
+
+  &--hollow {
+    background: transparent;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    img {
+      cursor: not-allowed;
+    }
+  }
+
+  &:not(&--no-border):disabled {
+    border: 2px solid $color-disabled;
+    background-color: $color-disabled;
+  }
+
+  &--hollow:not(&--no-border):disabled {
+    background: transparent;
+    color: $color-disabled;
+  }
+
+  &--wide {
+    padding: 8px 43px 8px 30px;
+  }
+
+  &--no-title &__text {
+    display: none;
+  }
+  &--no-title {
+    padding: 8px;
+    width: auto;
+  }
+  &--no-title#{&}--wide {
+    padding: 8px 18px;
+  }
+
+  &--no-border {
+    border-color: transparent;
+  }
+
+  &--no-background {
+    background: transparent;
+  }
+
+  &__text {
+    display: inline-block;
+    margin-left: 10px;
+    height: 21px;
+    line-height: 20px;
+    vertical-align: top;
+  }
+
+  img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .icon {
+    line-height: 21px;
+
+    & {
+      color: inherit;
+    }
+  }
+
+  // states
+  &--primary:not(&--hollow):not([disabled]) {
+    &:hover {
+      box-shadow: $hover-shadow;
+    }
+    &:active {
+      background-color: darken($blue, 10%);
+      border-color: darken($blue, 10%);
+    }
+    &:hover:active {
+      box-shadow: none;
+    }
+  }
+
+  &--secondary:not(&--hollow):not([disabled]) {
+    &:hover {
+      box-shadow: $hover-shadow;
+    }
+    &:active {
+      background-color: darken($red, 10%);
+      border-color: darken($red, 10%);
+    }
+    &:hover:active {
+      box-shadow: none;
+    }
+  }
+
+  &--primary#{&}--hollow:not([disabled]):not(&--no-border) {
+    &:hover {
+      background-color: rgba($blue, 0.12);
+    }
+    &:active {
+      background-color: rgba($blue, 0.3);
+    }
+  }
+
+  &--secondary#{&}--hollow:not([disabled]):not(&--no-border) {
+    &:hover {
+      background-color: rgba($red, 0.12);
+    }
+    &:active {
+      background-color: rgba($red, 0.3);
+    }
+  }
+}

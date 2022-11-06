@@ -1,0 +1,67 @@
+th {
+  text-align: left;
+}
+
+table.incident {
+  width: 100%;
+  margin-bottom: 40px;
+  page-break-inside: avoid;
+
+  & thead tr th {
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    font-size: 14px;
+  }
+
+  & tbody th {
+    width: 20%;
+    vertical-align: top;
+  }
+
+  & tbody th,
+  tbody td {
+    vertical-align: top;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+table.messages {
+  width: 100%;
+
+  & tbody th,
+  tbody td {
+    padding-top: 10px;
+    padding-bottom: 15px;
+    border-bottom: none;
+    word-break: break-word;
+  }
+
+  td {
+    width: 100%;
+  }
+
+  .left {
+    text-align: left;
+  }
+
+  .right {
+    text-align: right;
+  }
+}
+
+.ActivityLogs {
+  table tr {
+    page-break-inside: avoid;
+  }
+
+  td,
+  th {
+    padding: 2px 10px;
+  }
+}
+
+h1 {
+  line-height: 30px;
+}

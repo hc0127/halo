@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >
+  Create a role to be used by ECS tasks with the associated managed policies
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  ManagedPolicyArns:
+    Description: List of managed policy arns to attach to the user
+    Type: List<String>
+
+Outputs:
+
+  Name:
+    Description: Name of role created
+    Value: !Ref ECSTaskRole
+
+  Arn:
+    Description: Arn of role created
+    Value: !GetAtt ECSTaskRole.Arn
+
+Resources:
+
+# #### ECS Task Role
+# Role to be assumed by ECS task
+# ####
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns: !Ref ManagedPolicyArns

@@ -1,0 +1,9 @@
+.admin-client-limit-display {
+  position: absolute;
+  top: 45px;
+  right: 45px;
+  display: flex;
+  > * {
+    min-width: 90px;
+  }
+}

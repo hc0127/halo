@@ -1,0 +1,27 @@
+.admin-card {
+  margin-top: 32px;
+
+  &__body {
+    background-color: white;
+    margin: 2px;
+
+    padding: 32px 16px;
+
+    &--thin {
+      padding: 16px;
+    }
+    &--no-padding {
+      padding: 0px;
+    }
+  }
+
+  &__title {
+    font-size: 14px;
+    color: #a8b0b9;
+    line-height: 20px;
+  }
+
+  .search-input {
+    max-width: auto;
+  }
+}

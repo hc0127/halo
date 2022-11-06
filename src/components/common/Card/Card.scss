@@ -1,0 +1,52 @@
+.Card {
+  border-radius: $base-border-radius;
+  box-shadow: $base-box-shadow;
+}
+
+.Card--centerAlign {
+  text-align: center;
+}
+
+.Card--white {
+  background-color: $color-white;
+}
+
+.Card--blue {
+  background-color: $color-blue;
+}
+
+.Card--red {
+  background-color: $color-red;
+}
+
+.Card--margin-xs {
+  margin: $margin-xs;
+}
+.Card--margin-sm {
+  margin: $margin-sm;
+}
+.Card--margin-md {
+  margin: $margin-md;
+}
+.Card--margin-lg {
+  margin: $margin-lg;
+}
+.Card--margin-xl {
+  margin: $margin-xl;
+}
+
+.Card--padding-xs {
+  padding: $padding-xs;
+}
+.Card--padding-sm {
+  padding: $padding-sm;
+}
+.Card--padding-md {
+  padding: $padding-md;
+}
+.Card--padding-lg {
+  padding: $padding-lg;
+}
+.Card--padding-xl {
+  padding: $padding-xl;
+}

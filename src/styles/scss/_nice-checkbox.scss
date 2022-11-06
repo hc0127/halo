@@ -1,0 +1,25 @@
+.nice-checkbox {
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+
+  input {
+    display: none;
+    opacity: 0;
+    float: left;
+    width: 24px;
+    height: 24px;
+  }
+
+  input ~ span {
+    background-image: url(../../images/icons/icon-checkbox-off.svg);
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  input:checked ~ span {
+    background-image: url(../../images/icons/icon-checkbox-on.svg);
+  }
+}

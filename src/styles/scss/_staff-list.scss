@@ -1,0 +1,141 @@
+@mixin staff-list-disabled($item) {
+  cursor: default;
+
+  .clickable-div {
+    cursor: default;
+  }
+
+  #{$item}__container {
+    color: #d4d7dc;
+  }
+
+  #{$item}__phone {
+    a {
+      color: #d4d7dc;
+    }
+  }
+}
+
+.staff-list {
+  display: flex;
+  flex: 0 0 45%;
+  flex-direction: column;
+  background-color: white;
+  min-width: 100%;
+
+  &__header {
+    background-color: #f7f8f8;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    max-height: 30px;
+
+    &__shift {
+      font-size: 13px;
+      color: rgba(#4a4a4a, 0.5);
+      font-family: 'clearsans_regular';
+    }
+
+    &__search-input {
+      border-radius: 18px;
+      border: 1px solid #526173;
+      padding: 8px;
+      max-width: 170px;
+      height: 18px;
+      -webkit-border-radius: 18px;
+      -moz-border-radius: 18px;
+      -ms-border-radius: 18px;
+      -o-border-radius: 18px;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+  }
+
+  &--map-page &__item {
+    width: calc(100% - 16px);
+  }
+
+  &__item {
+    $item: &;
+    width: 25%;
+
+    &--booked-on {
+      .card__container {
+        background: #63d56e;
+      }
+
+      #{$item}__container {
+        color: #343da4;
+      }
+      #{$item}__phone {
+        a {
+          color: #343da4;
+        }
+      }
+    }
+
+    &--not-updated-recently {
+      @include staff-list-disabled($item);
+
+      .card__container {
+        background-color: #4fc3f7;
+        box-shadow: none;
+        border: 1px solid #d4d7dc;
+        min-height: 35px;
+        max-height: 35px;
+        height: 35px;
+      }
+    }
+
+    &--booked-off {
+      @include staff-list-disabled($item);
+
+      .card__container {
+        background: transparent;
+        border: 2px dashed #d4d7dc;
+        box-shadow: none;
+      }
+    }
+
+    .clickable-div {
+      display: flex;
+    }
+
+    &__pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6px;
+      margin-right: 8px;
+    }
+
+    &__container {
+      flex: 1;
+      color: #4a4a4a;
+      text-align: left;
+    }
+
+    &__name {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.7rem;
+      font-weight: bold;
+      margin-bottom: 4px;
+      line-height: 10px;
+    }
+    &__role,
+    &__phone,
+    &__last-updated {
+      font-size: 0.44rem;
+      font-weight: 600;
+    }
+  }
+}

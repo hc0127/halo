@@ -1,0 +1,32 @@
+.mobile-preview {
+  & h3 {
+    text-align: right;
+    margin-top: 15px;
+  }
+  &__mobile-preview-container {
+    height: 568px;
+    width: 320px;
+    background: url("../../images/mobile-app-preview-background.png");
+    background-size: cover;
+    display: flex;
+    float: right;
+    justify-content: center;
+    position: relative;
+    border: 1px solid #eeeeee;
+    text-align: center;
+
+    &__logo-container {
+      position: absolute;
+      top: 124px;
+      width: 166px;
+      height: 166px;
+    }
+
+    & img {
+      margin: 0 auto;
+      width: auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}

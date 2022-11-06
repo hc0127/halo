@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Provides ability for EC2 instance to have SSM documents ran against it & use SSM Session Manager
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+Outputs:
+
+  ManagedPolicy:
+    Value: !Ref SSMManagedPolicy
+
+Resources:
+
+# #### SSM Policy
+# Allows EC2 instance to receive run commands and run the documents, & to manage SSM sessions (SSH replacement)
+# ####
+  SSMManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          # Running documents etc.
+          - Effect: Allow
+            Action:
+              - ssm:DescribeAssociation
+              - ssm:GetDeployablePatchSnapshotForInstance
+              - ssm:GetDocument
+              - ssm:GetParameters
+              - ssm:ListAssociations
+              - ssm:ListInstanceAssociations
+              - ssm:PutInventory
+              - ssm:UpdateAssociationStatus
+              - ssm:UpdateInstanceAssociationStatus
+              - ssm:UpdateInstanceInformation
+              - ssm:PutComplianceItems
+              - ssm:PutConfigurePackageResult
+            Resource: '*'
+          # Communicating with EC2 service
+          - Effect: Allow
+            Action:
+              - ec2messages:AcknowledgeMessage
+              - ec2messages:DeleteMessage
+              - ec2messages:FailMessage
+              - ec2messages:GetEndpoint
+              - ec2messages:GetMessages
+              - ec2messages:SendReply
+            Resource: '*'
+          # SSM Session Manager communication
+          - Effect: Allow
+            Action:
+              - ssmmessages:CreateControlChannel
+              - ssmmessages:CreateDataChannel
+              - ssmmessages:OpenControlChannel
+              - ssmmessages:OpenDataChannel
+              - s3:GetEncryptionConfiguration
+            Resource: '*'
+          # Logging SSM Session Manager to CloudWatch Logs
+          - Effect: Allow
+            Action:
+              - logs:CreateLogStream
+              - logs:DescribeLogStreams
+              - logs:PutMetricFilter
+              - logs:PutSubscriptionFilter
+            Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:ssm-session-manager"
+          - Effect: Allow
+            Action:
+              - logs:PutLogEvents
+            Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:ssm-session-manager:*"
+          - Effect: Allow
+            Action:
+              - logs:DescribeLogGroups
+            Resource: '*'

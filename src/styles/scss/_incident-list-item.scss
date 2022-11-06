@@ -1,0 +1,83 @@
+.incident-list-item {
+  width: 50%;
+
+  .icon {
+    background-position: center;
+    background-size: 30px 30px;
+  }
+
+  &--read {
+    .icon {
+      background-color: #d6dce6;
+    }
+  }
+
+  &--read#{&}--resolved {
+    .icon {
+      background-color: #2ad587;
+    }
+  }
+
+  &__button {
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 8px;
+    width: 100%;
+
+    outline: none;
+    background: none;
+    border: none;
+    transition: background-color 0.25s ease-out;
+    border-radius: 3px;
+
+    &[disabled] {
+      cursor: not-allowed;
+    }
+    background-color: white;
+    &:not([disabled]):hover {
+      background-color: darken(white, 10%);
+    }
+  }
+
+  &__icon {
+    width: 30px;
+    height: 30px;
+  }
+  &__text {
+    flex-grow: 1;
+    margin-left: 15px;
+    overflow: hidden;
+
+    &__type {
+      color: #002c7c;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    &__code {
+      color: #444;
+      font-size: 12px;
+    }
+
+    &__what {
+      color: #444;
+      font-size: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    &__new-message {
+      float: right;
+      color: #002c7c;
+      font-size: 12px;
+      line-height: 20px;
+      display: none;
+
+      &--visible {
+        display: block;
+      }
+    }
+  }
+}

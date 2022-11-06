@@ -1,0 +1,281 @@
+#!/usr/bin/env bash
+
+# Exit immediately if command returns bad exit code
+set -e
+
+ENABLED_SLACK_REFS=(develop qa main prod)
+export CI_COMMIT_AUTHOR=$(git log --format="%an" -n1)
+export CI_COMMIT_MESSAGE=$(git log --format="%B" -n1)
+export CI_COMMIT_URL="${CI_PROJECT_URL}/commit/${CI_COMMIT_SHA}"
+
+main() {
+    if fn_exists $1; then
+        ${1}
+    else
+        echo "Function $1 doesn't exist" && exit 1
+    fi
+}
+
+#------------------------------------------
+# Job Tasks
+#------------------------------------------
+
+function build_docker_for_pipeline() {
+    # Pull latest version of image for branch / tag, for caching purposes (speed up the build)
+    # docker pull ${CI_REGISTRY_IMAGE}:${CI_BRANCH_SLUG} || true
+    # Build and tag with this pipeline ID so we can use it later, in test & release & deploy
+    docker build --build-arg CI=${CI} -t ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} .
+    # docker push ${CI_REGISTRY_IMAGE}
+}
+
+function lint() {
+    # docker pull ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID}
+    docker run --rm -e CI=${CI} ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} lint
+}
+
+function test() {
+    # Pull image built within this pipeline previously
+    docker pull ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID}
+    # Run npm test, via entrypoint.sh test action and generate coverage
+    mkdir coverage && docker run --rm -e CI=${CI} \
+      --mount type=bind,source="$(pwd)"/coverage,target=/app/coverage \
+      ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} test --coverage
+}
+
+function security() {
+    # Pull image built within this pipeline previously
+    docker pull ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID}
+    # Audit our dependencies for security vulnerabilities
+    docker run --rm -e CI=${CI} ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} yarn audit
+}
+
+function release_docker_for_branch() {
+    # Pull image built in this pipeline
+    docker pull ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID}
+    # Tag as latest image for branch / tag
+    docker tag ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} ${CI_REGISTRY_IMAGE}:${CI_BRANCH_SLUG}
+    # Push to GitLab Container Registry
+    docker push ${CI_REGISTRY_IMAGE}
+}
+
+function deploy() {
+    # Run npm build, setting REACT_APP_* env variables
+    export REACT_APP_ENVIRONMENT=${CI_ENVIRONMENT_NAME:-dev}
+    export REACT_APP_SENTRY_VERSION="${CI_PROJECT_NAME}@$(jq -r '.version' package.json)-${CI_JOB_ID}"
+    echo $REACT_APP_SENTRY_VERSION
+    echo "Building app via Docker, injecting following environment variables:"
+    get_react_env_vars_raw_names
+    docker run --name halo -v source=/home/halo-solutions-ltd/actions-runner/_work/halo-web/halo-web/,target=/app \
+      $(get_react_env_vars_for_docker) \
+      ${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID} build
+	  
+	docker cp halo:/app $(pwd)/app
+	docker rm halo
+    # create_sentry_release
+    # Set up required environment variables for deployment
+    export_deploy_ci_variables
+    aws configure set default.s3.max_concurrent_requests 20
+    # Sync build output with what is currently deployed
+    # This also deletes files in bucket that aren't present in build output (cleans old releases)
+    # Set a blanket cache policy to cache for up to 12hrs - used for versioned static assets
+    echo "Starting S3 sync ${CI_DEPOLOY_BUCKET}"
+    aws s3 sync $(pwd)/app/build s3://${CI_DEPLOY_BUCKET} --delete --cache-control "public,max-age=43200" --exclude "*.map"
+    # Disable caching for specific files. In particular, ones that reference versioned assets
+    # This means we can cache bust our versioned assets!
+    echo "S3 copy phase"
+    export CACHE_DISABLED_PARAMS="--metadata-directive REPLACE --cache-control max-age=0,no-cache,no-store,must-revalidate --acl public-read"
+    aws s3 cp s3://${CI_DEPLOY_BUCKET}/service-worker.js s3://${CI_DEPLOY_BUCKET}/service-worker.js --content-type application/javascript ${CACHE_DISABLED_PARAMS}
+    aws s3 cp s3://${CI_DEPLOY_BUCKET}/index.html s3://${CI_DEPLOY_BUCKET}/index.html --content-type text/html ${CACHE_DISABLED_PARAMS}
+    aws s3 cp s3://${CI_DEPLOY_BUCKET}/manifest.json s3://${CI_DEPLOY_BUCKET}/manifest.json --content-type application/json ${CACHE_DISABLED_PARAMS}
+    aws s3 cp s3://${CI_DEPLOY_BUCKET}/asset-manifest.json s3://${CI_DEPLOY_BUCKET}/asset-manifest.json --content-type application/json ${CACHE_DISABLED_PARAMS}
+	
+	echo "AWS s3 sync done"
+    # finalize_sentry_release
+}
+
+function deploy_qa_if_updated() {
+    last_qa_release=$(AWS_DEFAULT_REGION=eu-west-2 AWS_ACCESS_KEY_ID=AKIAJ6355LQD3QU4IK3A AWS_SECRET_ACCESS_KEY=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 \
+        aws dynamodb get-item --table-name gitlab-react-qa-releases --key "{\"ProjectId\": {\"N\": \"${CI_PROJECT_ID}\"}}" \
+        --output text --query "Item.[LastReleaseSha.S,LastReleaseTimestamp.N]"
+    )
+    echo "Last QA Release: ${last_qa_release}"
+    # If first QA release
+    if [ "${last_qa_release}" = "None" ]; then
+        deploy && update_last_qa_release && deploy_success_slack
+        return 0
+    fi
+    last_qa_release_sha=$(echo "${last_qa_release}" | awk '{print $1}')
+    last_qa_release_timestamp=$(echo "${last_qa_release}" | awk '{print $2}')
+    # If current commit is same as last release, or last release isn't in history (not sure how)
+    if [ "${CI_COMMIT_SHA}" = "${last_qa_release_sha}" ] || ! git merge-base --is-ancestor ${last_qa_release_sha} HEAD; then
+        no_qa_updates_slack ${last_qa_release_sha} ${last_qa_release_timestamp}
+        return 0
+    fi
+    # If last release occurred previously in branch
+    deploy && update_last_qa_release && deploy_success_slack
+    return 0
+}
+
+function update_last_qa_release() {
+    AWS_DEFAULT_REGION=eu-west-2 AWS_ACCESS_KEY_ID=AKIAJ6355LQD3QU4IK3A AWS_SECRET_ACCESS_KEY=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 \
+        aws dynamodb put-item --table-name gitlab-react-qa-releases --item \
+        "{\
+            \"ProjectId\": {\"N\": \"${CI_PROJECT_ID}\"}, \
+            \"LastReleaseSha\": {\"S\": \"${CI_COMMIT_SHA}\"}, \
+            \"LastReleaseTimestamp\": {\"N\": \"$(date +%s)\"} \
+        }"
+}
+
+#------------------------------------------
+# Slack functions
+#------------------------------------------
+
+function slack_enabled_for_ref() {
+    local ref
+    ref=${CI_COMMIT_REF_NAME:-none}
+    echo "${ENABLED_SLACK_REFS[*]}" | grep -F -q -w "$ref";
+}
+
+function deploy_success_slack() {
+    if [ ! -z ${CI_SLACK_WEBHOOK_URL+x} ] && slack_enabled_for_ref; then
+        local text attachments
+        export_deploy_ci_variables
+        text="Successful deployment of <${CI_PIPELINE_URL}|${CI_PROJECT_NAME}> to <${CF_URL}|${CI_ENVIRONMENT_NAME}>"
+        attachments="{\"fallback\":\"${text}\",\"color\":\"good\", \"text\": \"${text}\",\
+            \"fields\": [\
+                {\"title\": \"Git Commit\", \"value\": \"${CI_COMMIT_MESSAGE}\"},\
+                {\"title\": \"Git Author\", \"value\": \"${CI_COMMIT_AUTHOR}\"}\
+            ],\
+            \"actions\": [\
+                {\"type\": \"button\", \"text\": \"View Pipeline\", \"style\": \"primary\", \"url\": \"${CI_PIPELINE_URL}\"}\
+            ]\
+        }"
+
+        curl -s -X POST --data-urlencode \
+        "payload={\"channel\": \"${CI_SLACK_CHANNEL}\", \"username\": \"React GitLab CICD\",\
+        \"attachments\": [${attachments}], \"icon_emoji\": \":reactjs:\" }" \
+        "${CI_SLACK_WEBHOOK_URL}"
+    fi
+}
+
+function deploy_failure_slack() {
+    if [ ! -z ${CI_SLACK_WEBHOOK_URL+x} ] && slack_enabled_for_ref; then
+        local text attachments
+        text="Failed to deploy <${CI_PIPELINE_URL}|${CI_PROJECT_NAME}> to ${CI_ENVIRONMENT_NAME}"
+        attachments="{\"fallback\":\"${text}\",\"color\":\"danger\", \"text\": \"${text}\",\
+            \"fields\": [\
+                {\"title\": \"Git Commit\", \"value\": \"${CI_COMMIT_MESSAGE}\"},\
+                {\"title\": \"Git Author\", \"value\": \"${CI_COMMIT_AUTHOR}\"}\
+            ],\
+            \"actions\": [\
+                {\"type\": \"button\", \"text\": \"View Pipeline\", \"style\": \"primary\", \"url\": \"${CI_PIPELINE_URL}\"}\
+            ]\
+        }"
+
+        curl -s -X POST --data-urlencode \
+        "payload={\"channel\": \"${CI_SLACK_CHANNEL}\", \"username\": \"React GitLab CICD\",\
+        \"attachments\": [${attachments}], \"icon_emoji\": \":reactjs:\" }" \
+        "${CI_SLACK_WEBHOOK_URL}"
+    fi
+}
+
+function job_failure_slack() {
+    if [ ! -z ${CI_SLACK_WEBHOOK_URL+x} ] && slack_enabled_for_ref; then
+        local text attachments
+        text="The ${CI_JOB_NAME} job failed in the <${CI_PIPELINE_URL}|${CI_PROJECT_NAME}> pipeline."
+        attachments="{\"fallback\":\"${text}\",\"color\":\"danger\", \"text\": \"${text}\",\
+            \"fields\": [\
+                {\"title\": \"Git Author\", \"value\": \"${CI_COMMIT_AUTHOR}\", \"short\": true},\
+                {\"title\": \"Git Branch\", \"value\": \"${CI_COMMIT_REF_NAME}\", \"short\": true}\
+            ],\
+            \"actions\": [\
+                {\"type\": \"button\", \"text\": \"View Pipeline\", \"style\": \"primary\", \"url\": \"${CI_PIPELINE_URL}\"}\
+            ]\
+        }"
+
+        curl -s -X POST --data-urlencode \
+        "payload={\"channel\": \"${CI_SLACK_CHANNEL}\", \"username\": \"React GitLab CICD\",\
+        \"attachments\": [${attachments}], \"icon_emoji\": \":reactjs:\" }" \
+        "${CI_SLACK_WEBHOOK_URL}"
+    fi
+}
+
+function no_qa_updates_slack() {
+    # $1 = Last Release Sha, $2 = Last Release Timestamp
+    if [ ! -z ${CI_SLACK_WEBHOOK_URL+x} ] && slack_enabled_for_ref; then
+        local text attachments
+        text="No unreleased changes found to make a scheduled QA release. The last release was at $(date --date="@$2" "+%a %d %b %T UTC")"
+        attachments="{\"fallback\":\"${text}\",\"color\":\"good\", \"text\": \"${text}\",\
+            \"fields\": [\
+                {\"title\": \"Last Commit Message\", \"value\": \"$(git show -s --format=%B $1)\"},\
+                {\"title\": \"Last Commit Hash\", \"value\": \"<${CI_PROJECT_URL}/commit/$1|$(git rev-parse --short $1)>\"}\
+            ]\
+        }"
+
+        curl -s -X POST --data-urlencode \
+        "payload={\"channel\": \"${CI_SLACK_CHANNEL}\", \"username\": \"React GitLab CICD\",\
+        \"attachments\": [${attachments}], \"icon_emoji\": \":reactjs:\" }" \
+        "${CI_SLACK_WEBHOOK_URL}"
+    fi
+}
+
+#------------------------------------------
+# utils
+#------------------------------------------
+
+# Create a Sentry release and upload source maps
+function create_sentry_release() {
+    export SENTRY_URL="${SENTRY_URL:-https://sentry.io}"
+    export SENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN}"
+    export SENTRY_ORG="${SENTRY_ORG:-halo-solutions-ltd}"
+    export SENTRY_PROJECT="${SENTRY_PROJECT:-$CI_PROJECT_NAME}"
+    export SENTRY_DISABLE_UPDATE_CHECK="true"
+    export SENTRY_LOG_LEVEL="info"
+    sentry-cli releases new $REACT_APP_SENTRY_VERSION
+    #TODO: sentry-cli releases set-commits --auto $REACT_APP_SENTRY_VERSION
+    sentry-cli releases files $REACT_APP_SENTRY_VERSION upload-sourcemaps -x .js -x .map --validate --rewrite --url-prefix '~/static/js/' ./build/static/js/
+}
+
+# Finalize a Sentry release (call once deployed)
+function finalize_sentry_release() {
+    sentry-cli releases finalize $REACT_APP_SENTRY_VERSION
+}
+
+# Get the REACT_APP env vars for this build.
+# That is, env vars beginning with REACT_APP_ or <ENV>_REACT_APP_
+function get_react_env_vars() {
+    env | egrep "(^REACT_APP_)|(^${CI_ENVIRONMENT_NAME}_REACT_APP_)"
+}
+
+# Get the raw names of REACT_APP env vars we will be injecting into build
+# That is, names of all env vars starting with REACT_APP_ or <ENV>_REACT_APP_
+function get_react_env_vars_raw_names() {
+    get_react_env_vars | egrep -oh "^(.*=)*" | cut -d '=' -f 1
+}
+
+# Get react env vars in format ready to pass to Docker as env variables
+# all <ENV>_REACT_APP_ vars renamed to REACT_APP_ format
+# Prepended with -e so it can be passed to Docker build as env vars
+function get_react_env_vars_for_docker() {
+    get_react_env_vars | sed "s/^${CI_ENVIRONMENT_NAME}_REACT_APP/REACT_APP/" \
+    | sed "s/^/-e /"
+}
+
+# Export CI variables needed for deployment
+function export_deploy_ci_variables() {
+    export AWS_ACCESS_KEY_ID=$(A=${CI_ENVIRONMENT_NAME}_CI_DEPLOY_ACCESS_KEY_ID; echo ${!A})
+    export AWS_SECRET_ACCESS_KEY=$(A=${CI_ENVIRONMENT_NAME}_CI_DEPLOY_SECRET_ACCESS_KEY; echo ${!A})
+    export AWS_DEFAULT_REGION=$(A=${CI_ENVIRONMENT_NAME}_CI_DEPLOY_REGION; echo ${!A})
+    export CI_DEPLOY_BUCKET=$(S3=${CI_ENVIRONMENT_NAME}_CI_DEPLOY_BUCKET; echo ${!S3})
+    export CI_CF_DISTRIBUTION=$(CFD=${CI_ENVIRONMENT_NAME}_CI_CF_DISTRIBUTION; echo ${!CFD})
+    export CF_URL=$(aws cloudfront get-distribution --id ${CI_CF_DISTRIBUTION} \
+        --query "Distribution.[DomainName, DistributionConfig.Aliases.Items[0]]" \
+        --output text | awk '{if($2 == "None"){print "http://"$1} else {print "http://"$2}}')
+}
+
+function fn_exists() {
+  # appended double quote is an ugly trick to make sure we do get a string -- if $1 is not a known command, type does not output anything
+  [ `type -t $1`"" == 'function' ]
+}
+
+main "$@"

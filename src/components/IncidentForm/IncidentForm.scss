@@ -1,0 +1,75 @@
+.IncidentForm {
+  position: absolute;
+  height: calc(100%); // use variable
+  background: white;
+  z-index: $z-backmid;
+  transition: all 0.4s;
+  overflow-y: scroll;
+  color: $color-black;
+  width: 100%;
+
+  &__controls {
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    & button.Button--close {
+      margin-right: 20px !important;
+    }
+  }
+  &__empty {
+    margin-left: $margin-lg * 2;
+    margin-right: $margin-lg * 2;
+    padding: $padding-md;
+  }
+  &__header {
+    margin-left: $margin-lg * 2;
+    margin-right: $margin-lg * 2;
+    // background-color: $color-light-grey;
+    margin-bottom: $margin-lg;
+    padding-top: $padding-md;
+    padding-bottom: $padding-md;
+    // padding: $padding-md;
+
+    select {
+      min-width: 300px;
+      color: $color-black;
+      line-height: 34px;
+      font-size: 16px;
+      background-color: #fff;
+      border-radius: 20px;
+      height: 45px;
+      margin-bottom: $margin-sm;
+      border: 1px solid #f0f0f0;
+      padding-left: 30px;
+      text-indent: 10px;
+      margin-left: $margin-sm;
+    }
+    & h1 {
+      margin: 0px;
+      padding: 0px;
+      margin-bottom: 10px;
+    }
+  }
+  &__content {
+    margin: $margin-lg * 2;
+    //background-color: #f0f0f0;
+
+    & h3 {
+      border-bottom: 2px solid $color-black;
+      margin-bottom: $margin-sm;
+      padding-bottom: $padding-sm;
+    }
+
+    & > div {
+      margin-bottom: $margin-lg * 2;
+      border-bottom: 10px solid white;
+    }
+
+    &__title {
+      color: $color-black;
+      //background-color: yellow;
+      margin-bottom: $margin-md;
+    }
+  }
+}

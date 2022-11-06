@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy defining access to SNS, to register/unregister device endpoints and directly publish msgs
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  PlatformApplicationResources:
+    Description: List of platform application resources the policy should allow access to
+    Type: List<String>
+
+Outputs:
+
+  SNSManagedPolicy:
+    Description: Arn for the SNS access managed policy
+    Value: !Ref SNSManagedPolicy
+
+Resources:
+
+# #### SNS policy
+# Allowing API to register/unregister device endpoints and directly publish notifications to devices
+# ####
+  SNSManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Sid: !Sub "${Project}${Environment}SNSAccess"
+              Effect: Allow
+              Action:
+                - sns:DeleteEndpoint
+                - sns:ListEndpointsByPlatformApplication
+                - sns:SetEndpointAttributes
+                - sns:GetEndpointAttributes
+                - sns:CreatePlatformEndpoint
+                - sns:Publish
+              Resource: !Ref PlatformApplicationResources
+            - Sid: !Sub "${Project}${Environment}SNSTopicAccess"
+              Effect: Allow
+              Action:
+                - sns:AddPermission
+                - sns:ConfirmSubscription
+                - sns:CreateTopic
+                - sns:DeleteTopic
+                - sns:GetTopicAttributes
+                - sns:ListSubscriptions
+                - sns:ListSubscriptionsByTopic
+                - sns:ListTopics
+                - sns:Publish
+                - sns:RemovePermission
+                - sns:SetTopicAttributes
+                - sns:Subscribe
+                - sns:Unsubscribe
+              Resource:
+                - !Sub "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${Project}_${Environment}*"

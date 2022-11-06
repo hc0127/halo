@@ -1,0 +1,4 @@
+Project=halosolutions
+Environment=sandbox
+CloudFrontAcmCertificateArn=arn:aws:acm:us-east-1:886183361249:certificate/d16e30fa-2296-4def-9ec6-bdb54faf3e7d
+CloudFrontAliases=web.sandbox.halosolutions.com

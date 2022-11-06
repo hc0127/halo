@@ -1,0 +1,68 @@
+.admin-dialog-halo-check {
+  width: 920px;
+
+  .admin-form {
+    margin: 2rem 0;
+    padding: 0;
+
+    &__row {
+      width: 100%;
+    }
+  }
+
+  &__tags {
+    margin: 0 0 1rem;
+
+    .tag-input {
+      &.clickable-div {
+        cursor: text;
+      }
+
+      &-container {
+        &__border {
+          border-radius: 0;
+          border: 0;
+          background-color: $light-gray;
+        }
+      }
+
+      input {
+        color: inherit;
+        font-size: unset;
+      }
+
+      &__tag {
+        padding: .25rem .5rem;
+        border: 0;
+        cursor: pointer;
+        color: $color-white;
+        background-color: $color-blue;
+
+        &--selected {
+          background-color: $color-light-blue;
+        }
+      }
+    }
+  }
+
+  &__search {
+    margin: 1rem 0 0;
+    color: $color-blue;
+    cursor: text;
+
+    .tag-input {
+      &.clickable-div {
+        cursor: text;
+      }
+
+      &-container__border {
+        border-width: 2px;
+        border-color: $color-blue;
+      }
+    }
+  }
+
+  &__assignees {
+    margin: 1rem 0 0;
+  }
+}

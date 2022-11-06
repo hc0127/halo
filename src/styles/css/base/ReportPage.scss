@@ -1,0 +1,220 @@
+@media print {
+  @-moz-document url-prefix() {
+    body,
+    div {
+      display: block !important;
+    }
+  }
+
+  div.ReportContainer {
+    /* All your print styles go here */
+
+    #header,
+    #footer,
+    #nav {
+      display: none !important;
+    }
+
+    padding-top: 0px;
+    font-size: 15px;
+    line-height: 16px;
+    font-family: sans-serif;
+
+    .PrintContainer {
+      overflow: initial;
+      padding-bottom: 16px;
+      box-shadow: none;
+      max-width: none;
+      margin: 16px 0px;
+    }
+    
+    .SectionTitle {
+      width: calc(100% - 40px);
+      padding: 20px;
+
+      margin: 16px auto;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 1.2em;
+      background-color: #e7eeef;
+      border-bottom: 2px solid black;
+      color: black;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+  }
+
+  header.header {
+    display: none;
+  }
+
+  .SideMenu {
+    display: none;
+  }
+
+  .PopupView {
+    display: none;
+  }
+
+  .PrintContainer img.report-logo {
+    width: 70px;
+  }
+
+  .PieAndLegend .pie-legend {
+    min-width: 250px;
+    padding-left: 250px;
+  }
+
+  .form-submit {
+    display: none;
+  }
+}
+
+.ReportContainer {
+  font-size: 14px;
+  line-height: 18px;
+  font-family: sans-serif;
+  background-color: $color-light-grey;
+  height: calc(100vh - 80px - 80px);
+  overflow: scroll;
+  padding-top: 100px;
+  margin-left: 80px;
+
+  .ReportTitle {
+    font-size: 1.5em;
+    line-height: 2em;
+    padding-bottom: 15px;
+  }
+
+  .pieHeader {
+    text-align: center;
+  }
+
+  .IncidentTableContainer {
+    padding: 15px;
+    padding-top: 45px;
+  }
+
+  .SectionTitle {
+    width: calc(100% - 40px);
+    padding: 20px;
+
+    margin: 16px auto;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+    background-color: #e7eeef;
+    border-bottom: 2px solid black;
+    color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .report-brand {
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 15px;
+    padding-left: 15px;
+  }
+
+  .report-logo {
+    width: 35px;
+    vertical-align: middle;
+    padding-top: 10px;
+  }
+
+  .pullRight {
+    float: right;
+  }
+
+  .titlePadding {
+    padding-top: 20px;
+  }
+
+  .PrintContainer {
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 21cm;
+    margin: 16px auto;
+    background-color: white;
+    box-shadow: 10px 10px 79px 0px rgba(161, 161, 161, 1);
+  }
+
+  span.right {
+    display: block;
+    float: right;
+  }
+
+  span.incidentHeader {
+    font-size: 18px;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: none;
+  }
+
+  table.page {
+    width: calc(100% - 40px);
+    border-collapse: collapse;
+  }
+
+  th {
+    text-align: left;
+  }
+
+  table.incident {
+    width: 100%;
+    margin-bottom: 40px;
+    page-break-inside: avoid;
+
+    & thead tr th {
+      border-bottom: 2px solid #333;
+      padding-bottom: 15px;
+      font-size: 14px;
+    }
+
+    & tbody th {
+      width: 20%;
+      vertical-align: top;
+    }
+
+    & tbody th,
+    tbody td {
+      vertical-align: top;
+      padding-top: 5px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+  }
+  .incident {
+    &__messages,
+    &__resolution {
+      img {
+        max-height: 150px;
+        width: auto;
+      }
+    }
+  }
+}
+
+.ReportContainer {
+  .PopupView {
+    left: 0%;
+    width: 100%;
+  }
+
+  .print-button {
+    margin-bottom: 50px;
+  }
+}
+
+.Heading {
+  width: 100%;
+}
+
+@media only print {
+  .ReportContainer {
+    overflow: visible;
+  }
+}

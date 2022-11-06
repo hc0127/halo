@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  DEPRECATED
+  Create user with managed policies and associated access key
+  THIS OUTPUTS THE SECRET API KEY TO CLOUDFORMATION CONSOLE WHICH IS A SECURITY RISK!!
+  WHERE POSSIBLE USE iam-secure-access-key
+Parameters:
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+  Environment:
+    Description: Environment
+    Type: String
+  ManagedPolicyArns:
+    Description: List of managed policy arns to attach to the user
+    Type: List<String>
+Outputs:
+  IAMUser:
+    Description: Name of user created
+    Value: !Ref IAMUser
+  IAMAccessKeyId:
+    Description: ID of Access Key created
+    Value: !Ref IAMAccessKey
+  # todo: this should not be an output as it is visible on AWS and is a secret!!
+  IAMAccessKeySecret:
+    Description: Secret of Access Key created
+    Value: !GetAtt IAMAccessKey.SecretAccessKey
+Resources:
+# #### IAM User to allow API access to resources
+# Access to S3 and SES atm
+# PREFERABLY USE THE EC2 INSTANCE PROFILE RATHER THAN THIS
+# ####
+  IAMUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: "/"
+      ManagedPolicyArns: !Ref ManagedPolicyArns
+# #### IAM Access Key
+# Needed for programmatic access to AWS resources permitted by policies
+# ####
+  IAMAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      Serial: 1
+      Status: Active
+      UserName: !Ref IAMUser

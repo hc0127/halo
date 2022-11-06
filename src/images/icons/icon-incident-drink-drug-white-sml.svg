@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <rect id="icon-incident-drink-drug-white-sml-a" width="13.084" height="19"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <g transform="translate(3.571 5)">
+      <g fill="#FFF" transform="translate(16.104)">
+        <g transform="translate(2.013)">
+          <rect width="2.013" height="7"/>
+          <rect width="2.013" height="5" y="15"/>
+        </g>
+        <rect width="6.039" height="2" y="5"/>
+        <rect width="6.039" height="2" y="13"/>
+        <rect width="6.039" height="2" y="18"/>
+        <rect width="2.013" height="10" y="5"/>
+        <rect width="2.013" height="10" x="4.026" y="5"/>
+      </g>
+      <g transform="translate(0 1)">
+        <mask id="icon-incident-drink-drug-white-sml-b" fill="#fff">
+          <use xlink:href="#icon-incident-drink-drug-white-sml-a"/>
+        </mask>
+        <g mask="url(#icon-incident-drink-drug-white-sml-b)">
+          <g transform="translate(0 -1.286)">
+            <rect width="2.013" height="20" x="1.006" y=".286" fill="#FFF" transform="rotate(-5 2.013 10.286)"/>
+            <rect width="2.013" height="20" x="10.065" y=".286" fill="#FFF" transform="rotate(5 11.071 10.286)"/>
+            <rect width="9.058" height="2" x="2.013" y="18.286" fill="#FFF"/>
+            <rect width="9.058" height="2" x="2.013" y="11.286"/>
+          </g>
+        </g>
+      </g>
+    </g>
+    <path stroke="#FFF" stroke-linejoin="round" stroke-width="1.988" d="M5.58441558,16.1888505 C6.56082527,16.7861283 7.55064795,16.972299 8.55388364,16.7473626 C9.08717049,16.6277939 10.3495992,16.3020107 11.6011641,16.0213229 C12.4888963,15.8222318 13.4249479,16.2114076 14.4093189,17.1888505"/>
+  </g>
+</svg>

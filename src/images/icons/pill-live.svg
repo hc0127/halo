@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="25" viewBox="0 0 56 25">
+    <g fill="none" fill-rule="evenodd">
+        <rect width="56" height="25" fill="#2AD587" rx="12.5"/>
+        <text fill="#FFF" font-family="ClearSans, Clear Sans" font-size="14">
+            <tspan x="16" y="17">Live</tspan>
+        </text>
+    </g>
+</svg>

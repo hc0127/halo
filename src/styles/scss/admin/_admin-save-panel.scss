@@ -1,0 +1,24 @@
+.admin-save-panel {
+  &:not(&--dialog) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    left: 200px;
+    padding: 16px;
+    background-color: #3a4bc1;
+    z-index: 100;
+
+    .admin-button:last-child {
+      float: none;
+    }
+
+    .admin-button:not(:disabled) {
+      color: #3a4bc1;
+      background-color: white;
+      border-color: white;
+    }
+  }
+}

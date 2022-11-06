@@ -1,0 +1,5 @@
+{
+  "appKey": "myAppId",
+  "javascriptKey": "masterKey",
+  "parseServerURL": "http://localhost:1337/1/"
+}

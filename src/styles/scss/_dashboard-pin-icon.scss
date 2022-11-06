@@ -1,0 +1,42 @@
+.dashboard-pin-icon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > img {
+    width: 18px;
+    height: 18px;
+  }
+
+  &__content {
+    width: 27px;
+    height: 27px;
+    border-radius: 20px;
+    position: absolute;
+    top: -7px;
+    left: -1px;
+    right: 0px;
+    margin: 2px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    > * {
+      margin: auto;
+    }
+  }
+
+  & + .admin-field {
+    margin-left: 8px;
+  }
+
+  & &__custom-pin-image {
+    height: auto;
+    margin: 0px auto;
+    max-width: 75%;
+
+    &--inactive {
+      filter: grayscale(100%);
+    }
+  }
+}

@@ -1,0 +1,131 @@
+.form {
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  &__title {
+    color: #172c71;
+    font-size: 22px;
+  }
+
+  &__wrapper {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  &__confirmation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 82vh;
+
+    img {
+      margin-top: 30px;
+      max-width: 60px;
+      width: 100%;
+      display: block;
+      border-radius: 50%;
+    }
+  }
+
+  &__row {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  &__inline {
+    display: flex;
+  }
+
+  label {
+    display: block;
+    font-weight: 400;
+    margin-bottom: 5px;
+    color: #172c71;
+  }
+
+  .label__inline {
+    width: 100%;
+  }
+
+  &__input-description {
+    font-size: 13px;
+    color: #172c71;
+    margin-bottom: 5px;
+  }
+
+  input[type='text'],
+  textarea {
+    border: 1px solid #c5c5c5;
+    font-size: 16px;
+
+    &::-webkit-input-placeholder {
+      color: #727681;
+    }
+  }
+
+  select {
+    border: 1px solid #c5c5c5;
+    font-size: 16px;
+    width: 100%;
+    padding: 7px;
+  }
+
+  input[type='text'],
+  input[type='file'] {
+    padding: 7px;
+    width: 100%;
+  }
+
+  textarea {
+    padding: 7px;
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  &__error {
+    color: red;
+    font-size: 14px;
+    margin-top: 3px;
+
+    &--submission {
+      color: white;
+      background-color: red;
+      padding: 5px;
+      text-align: center;
+      width: 100%;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+  }
+
+  &__footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #172c71;
+
+    img {
+      width: 22px;
+    }
+  }
+
+  button {
+    color: white;
+    background-color: #c92c64;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 14px;
+    width: 100%;
+    text-align: center;
+
+    &[disabled] {
+      background-color: grey;
+    }
+  }
+}

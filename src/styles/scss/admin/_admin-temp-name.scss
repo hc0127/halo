@@ -1,0 +1,13 @@
+.admin-temp-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &__container {
+    align-self: center;
+  }
+
+  &__client {
+    font-size: 10px;
+  }
+}

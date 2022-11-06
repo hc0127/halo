@@ -1,0 +1,25 @@
+.pagination-loader--container {
+  display: table;
+  padding: 10px;
+  border: 1px solid #626262;
+  border-radius: 10px;
+  background: white;
+  position: fixed;
+  left: 22%;
+  top: 50%;
+  z-index: 1;
+}
+
+.pagination-loader--wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pagination-loader--text {
+  padding-bottom: 10px;
+}
+
+.pagination-loader--spiner {
+  padding-bottom: 15px;
+}

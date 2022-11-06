@@ -1,0 +1,20 @@
+.selector {
+  border: 2px solid #3a4bc1;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 0px 4px;
+  padding: 0 10px;
+
+  select {
+    border: none;
+    height: 32px;
+    width: 200px;
+    color: #526173;
+    padding-top: 1px;
+    margin-top: 2px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

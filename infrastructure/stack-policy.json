@@ -1,0 +1,24 @@
+{
+  "Statement" : [
+    {
+      "Effect" : "Deny",
+      "Action" : ["Update:Replace", "Update:Delete"],
+      "Principal": "*",
+      "Resource" : "*",
+      "Condition" : {
+        "StringEquals" : {
+          "ResourceType" : [
+            "AWS::S3::Bucket",
+            "AWS::CloudFront::Distribution"
+          ]
+        }
+      }
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : "Update:*",
+      "Principal": "*",
+      "Resource" : "*"
+    }
+  ]
+}

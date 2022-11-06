@@ -1,0 +1,18 @@
+.admin-empty-page {
+  padding: 10rem 0;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+  }
+
+  p {
+    margin: .25rem 0 1.5rem;
+    color: $color-grey-med;
+  }
+
+  button {
+    margin: 0;
+    float: none !important;
+  }
+}

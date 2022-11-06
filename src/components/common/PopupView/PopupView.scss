@@ -1,0 +1,84 @@
+.PopupView {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  width: 50%;
+  height: calc(100% - 80px);
+  z-index: $z-frontmid;
+
+  &--open {
+    visibility: visible;
+  }
+
+  &--closed {
+    visibility: hidden;
+  }
+
+  &__popup {
+    background: $color-white;
+    width: 80%;
+    max-width: 500px;
+    height: 300px;
+    padding: $padding-md;
+    border-radius: $base-border-radius;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: $z-frontmid;
+    display: flex;
+
+    textarea {
+      border: 1px solid grey;
+      border-radius: 6px;
+      height: 200px;
+      width: 100%;
+      padding: $padding-sm;
+      box-sizing: border-box;
+    }
+
+    &__checkbox {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+
+    &__buttons {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: $margin-sm;
+    }
+  }
+  &__content {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    & div {
+      //background-color: pink;
+
+      &.PopupView__button-bar {
+        margin-top: auto;
+        padding-top: $padding-sm;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
+.PopupView__content--lockdown {
+  textarea {
+    height: 150px;
+  }
+}
+
+.PopupView__content--evacuation {
+  textarea {
+    height: 120px;
+  }
+}

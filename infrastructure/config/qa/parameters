@@ -1,0 +1,4 @@
+Project=halo
+Environment=qa
+CloudFrontAcmCertificateArn=arn:aws:acm:us-east-1:177740564506:certificate/4d4491f7-a522-40bf-b2ae-a47040df8b5b
+CloudFrontAliases=web.qa.halosolutions.com

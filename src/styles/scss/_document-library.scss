@@ -1,0 +1,10 @@
+.document-library {
+  background: #fff;
+  height: calc(100% - 80px);
+  position: relative;
+  margin-left: 80px;
+
+  .dashboard-page__panel--dialog {
+    width: 100%;
+  }
+}

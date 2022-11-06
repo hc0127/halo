@@ -1,0 +1,6 @@
+Region=eu-west-2
+MasterTemplate=master-web.yaml
+CFS3Bucket=halo-qa-cf-1616620979
+StackName=haloqawebstack
+StackPolicy=stack-policy.json
+CreationFailureAction=DO_NOTHING

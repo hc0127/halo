@@ -1,0 +1,23 @@
+$grey: #99aabe;
+$blue: #3a4bc1;
+
+.ticket-total-entries {
+  width: calc(40% - 23px);
+  display: inline-block;
+  float: left;
+
+  &__stat {
+    font-size: 74px;
+    color: $blue;
+    font-weight: bold;
+    margin-top: 44px;
+    float: left;
+  }
+
+  &__report-header {
+    font-size: 16px;
+    color: $grey;
+    padding-bottom: 8px;
+    border-bottom: 2px solid $grey;
+  }
+}

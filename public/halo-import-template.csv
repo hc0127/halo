@@ -1,0 +1,4 @@
+Title,Description,Location,Type,Reoccurring,Start Date,End Date,Start Time,End time
+Check Fire Alarms,Check Firealarms ,Zone 1,Pre-Event,Every Day,02/09/21,05/09/21,09:00,
+Check Bins,Check the bins and dispose of rubbish,,During Event ,Every Hour,02/09/21,05/09/21,09:00,17:00
+Health and Safety Meeting,Attend meeting,"Zone 1, Zone 2",Post-Event,Never,05/09/21,,17:00,

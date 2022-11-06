@@ -1,0 +1,38 @@
+.map-container {
+  width: 100%;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 20px;
+    background-color: white;
+
+    &__title {
+      display: block;
+    }
+
+    &__icons {
+      display: flex;
+    }
+  }
+  &__content {
+    height: calc(100% - 60px);
+    position: relative;
+    width: 100%;
+  }
+
+  &--headless &__header {
+    display: none;
+  }
+  &--headless &__content {
+    height: 100%;
+  }
+
+  &__filter {
+    &--disabled {
+      opacity: 0.5;
+    }
+  }
+}

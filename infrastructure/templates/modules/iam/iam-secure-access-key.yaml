@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >
+  Create user with managed policies and associated access key SECURELY.
+  We use a custom Lambda-backed resource to deal with creating the access key and storing it in SSM Parameter Store, encrypted.
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  ManagedPolicyArns:
+    Description: List of managed policy arns to attach to the user
+    Type: List<String>
+
+Outputs:
+
+  IAMUser:
+    Description: Name of user created
+    Value: !Ref IAMUser
+
+  IAMAccessKeyId:
+    Description: ID of IAM Access Key used for API access
+    Value: !GetAtt APIKey.AccessKeyId
+
+Resources:
+
+# #### IAM User to allow API access to resources
+# List of managed policies define access granted
+# ####
+  IAMUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: "/"
+      ManagedPolicyArns: !Ref ManagedPolicyArns
+
+# #### Lambda CreateAPIKey Function
+# Deals with creating access key if required and storing in Parameter Store
+# todo: If RequestType is Delete, delete access key from parameter store + IAM?
+# ####
+  CreateAPIKeyFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: iam-secure-access-key-lambda
+      Handler: iam-secure-access-key.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.7
+      MemorySize: 128
+      Timeout: 30
+
+# #### Lambda Execution Role
+# Granting necessary permissions to run Lambda function
+# ####
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: !Sub "${Project}${Environment}IAMSecureAccessKeyRole"
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - ssm:PutParameter
+                Resource:
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Project}_${Environment}/*"
+              - Effect: Allow
+                Action:
+                  - kms:ListKeys
+                  - kms:ListAliases
+                  - kms:Describe*
+                  - kms:Encrypt
+                Resource:
+                  - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/${ParameterStoreKeyId}"
+              - Effect: Allow
+                Action:
+                  - iam:ListAccessKeys
+                  - iam:CreateAccessKey
+                Resource:
+                  - !Sub "arn:aws:iam::${AWS::AccountId}:user/${IAMUser}"
+
+# #### Custom API Key resource
+# This is what will actually call the Lambda function to create the API Key for the user
+# ####
+  APIKey:
+    Type: Custom::APIKey
+    Properties:
+      ServiceToken: !GetAtt CreateAPIKeyFunction.Arn
+      UserName: !Ref IAMUser

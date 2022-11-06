@@ -1,0 +1,9 @@
+/* Safari 10.1+ (March 27, 2017) */
+@mixin safari-10-1-plus-only {
+  @media not all and (min-resolution:.001dpcm)
+  {
+    @supports (-webkit-appearance:none) {
+      @content;
+    }
+  }
+}

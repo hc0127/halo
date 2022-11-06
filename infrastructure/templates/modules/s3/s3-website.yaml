@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  S3 bucket set up for public web hosting, ideal for static web apps like React.
+  Allows public GET access and an IAM user full access for deployments.
+  This does not include Cloudfront capabilities
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+Outputs:
+
+  Id:
+    Description: Name of s3 bucket created
+    Value: !Ref S3WebsiteBucket
+
+  URL:
+    Description: URL for website hosted on S3
+    Value: !GetAtt S3WebsiteBucket.WebsiteURL
+
+  SecureURL:
+    Description: HTTPS for website hosted on S3
+    Value: !Sub "https://${S3WebsiteBucket.DomainName}"
+
+Resources:
+
+# #### S3 Website Bucket
+# Stores static files and sets up a basic website configuration
+# ####
+  S3WebsiteBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      Tags:
+        - Key: Name
+          Value: !Sub "s3-website-${Project}-${Environment}"
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+    DeletionPolicy: Retain
+
+# #### S3 Website Bucket Policy
+# Public read access
+# ####
+  S3WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3WebsiteBucket
+      PolicyDocument:
+        Statement:
+          - Sid: !Sub "${Project}${Environment}S3WebsitePublicRead"
+            Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource: !Sub "arn:aws:s3:::${S3WebsiteBucket}/*"

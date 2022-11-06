@@ -1,0 +1,71 @@
+$blue: #3a4bc1;
+
+@mixin pseudoSize {
+  content: '';
+  height: calc(100% - 4px);
+  left: 0px;
+  position: absolute;
+  bottom: 0px;
+  transition: 0.3s ease-in-out;
+  width: calc(100% - 4px);
+}
+
+.event-list-button {
+  background: transparent;
+  border: none;
+  border-radius: 18px;
+  color: $blue;
+  display: flex;
+  font-size: 14px;
+  line-height: 33px;
+  overflow: hidden;
+  padding: 0px 25px;
+  padding-top: 1px;
+  position: relative;
+  transition: 0.3s ease-in-out;
+  z-index: 0;
+
+  &::before{
+    @include pseudoSize;
+    border-color: $blue;
+    border: 2px solid;
+    border-radius: 18px;
+    color: $blue;
+  }
+
+  &::after {
+    @include pseudoSize;
+    background: $blue;
+    height: 0%;
+    width: 100%;
+    z-index: -1;
+  }
+
+  &:hover {
+    color: $white;
+
+    .icon::before {
+      color: $white;
+    }
+    &::after {
+      color: $blue;
+      height: 100%;
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  .icon {
+    left: 3px;
+    position: relative;
+    top: 5px;
+
+    &::before {
+      color: $blue;
+      transition: 0.3s ease-in-out;
+    }
+  }
+
+}

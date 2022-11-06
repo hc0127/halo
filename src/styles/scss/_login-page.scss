@@ -1,0 +1,36 @@
+.login {
+  &-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-page {
+    align-items: center;
+    background-color: #212f40;
+    display: flex;
+    height: 100vh;
+    justify-content: space-around;
+
+    .card__container {
+      bottom: 10vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 25px 50px;
+      position: relative;
+      width: 45vh;
+
+      label {
+        color: #526173;
+      }
+
+      .admin-field__input {
+        width: 100%;
+      }
+
+      .admin-button {
+        margin: 25px auto 0px auto;
+      }
+    }
+  }
+}

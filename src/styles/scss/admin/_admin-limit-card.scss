@@ -1,0 +1,17 @@
+.admin-limit-card {
+  text-align: center;
+  color: #3a4bc1;
+
+  &__title {
+    font-size: 18px;
+  }
+  &__content {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .bordered {
+    border: #3a4bc1 1px solid;
+    border-radius: 7px;
+    padding: 3px 10px 3px 10px;
+  }
+}

@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy defining resources that can be accessed, usually used by Django API
+Parameters:
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+  Environment:
+    Description: Environment
+    Type: String
+  S3Bucket:
+    Description: Name of bucket, NOT arn
+    Type: String
+Outputs:
+  S3ManagedPolicy:
+    Value: !Ref S3ManagedPolicy
+Resources:
+# #### S3 policy
+# Allowing CRUD access to objects and ability to list bucket info
+# ####
+  S3ManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+              - s3:GetBucketLocation
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}"
+          - Effect: Allow
+            Action:
+            - s3:DeleteObject
+            - s3:GetObject
+            - s3:PutObject
+            - s3:PutObjectAcl
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"

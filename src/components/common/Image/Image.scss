@@ -1,0 +1,10 @@
+.Image {
+  &,
+  img {
+    max-width: 100%;
+  }
+
+  .Button--invisible {
+    width: auto;
+  }
+}

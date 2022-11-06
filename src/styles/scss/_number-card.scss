@@ -1,0 +1,44 @@
+.number-card {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 8px;
+  width: 100px;
+  cursor: pointer;
+
+  &__container {
+    background-color: white;
+
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    height: 100%;
+  }
+
+  &__number {
+    padding-top: 8px;
+    font-weight: bold;
+    color: #394fbf;
+    font-size: 44px;
+    line-height: 44px;
+    letter-spacing: -2.58px;
+  }
+
+  &__subtitle {
+    display: inline-block;
+    font-weight: normal;
+    color: #444444;
+    font-size: 10px;
+  }
+
+  &--dark &__container {
+    background-color: #4a4a4a;
+  }
+
+  &--dark &__number {
+    color: white;
+  }
+
+  &--dark &__subtitle {
+    color: white;
+  }
+}

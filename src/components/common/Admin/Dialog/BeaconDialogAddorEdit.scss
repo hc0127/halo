@@ -1,0 +1,9 @@
+.beacon-dialog{
+    &-buttoncontainer{
+        display: flex;
+        justify-content: space-evenly;
+    }
+    &-title{
+        padding-bottom: 20px;
+    }
+}

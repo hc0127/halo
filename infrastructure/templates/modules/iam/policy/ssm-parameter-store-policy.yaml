@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Provides access to parameters for the <PROJECT>_<ENVIRONMENT>
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  ParameterStoreKeyId:
+    Description: Id of the key used for parameter store
+    Type: String
+
+Outputs:
+
+  ManagedPolicy:
+    Value: !Ref SSMParameterStoreManagedPolicy
+
+Resources:
+
+# #### SSM Parameter Store Policy
+# Allows read access to keys beginning with <PROJECT>_<ENVIRONMENT>
+# Allows usage of parameter_store_key KMS to decrypt parameters
+# ####
+  SSMParameterStoreManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+            - ssm:DescribeParameters
+          Resource:
+            - "*"
+        - Effect: Allow
+          Action:
+            - ssm:GetParameters
+          Resource:
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Project}_${Environment}/*"
+        - Effect: Allow
+          Action:
+            - ssm:GetParametersByPath
+          Resource:
+            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Project}_${Environment}/"
+        - Effect: Allow
+          Action:
+            - kms:ListKeys
+            - kms:ListAliases
+            - kms:Describe*
+            - kms:Decrypt
+          Resource:
+            - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/${ParameterStoreKeyId}"

@@ -1,0 +1,40 @@
+.event-list-page {
+  align-items: center;
+  background-color: #212f40;
+  display: flex;
+  height: 100vh;
+  justify-content: space-around;
+
+  &__list {
+    max-height: 500px;
+    overflow: auto;
+  }
+
+  &__event {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0px;
+
+    .admin-temp-name {
+      color: #526173;
+    }
+  }
+
+  .card__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 25px 50px;
+    position: relative;
+    width: 45vh;
+  }
+
+  .admin-button {
+    margin: 25px auto 0px auto;
+  }
+
+  .button-with-icon {
+    width: 150px;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,75 @@
+.select-members {
+  $select-members: &;
+  display: block;
+
+  &__select {
+    z-index: 5;
+
+    #{$select-members} &__control {
+      border-radius: 9999px;
+
+      &,
+      &:hover,
+      &:focus {
+        border-width: 2px;
+        border-color: $color-blue;
+      }
+    }
+
+    &__indicator-separator {
+      display: none;
+    }
+
+    &-users {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-content: flex-start;
+      position: relative;
+      max-height: 340px;
+      width: 100%;
+      overflow-y: auto;
+
+      li {
+        width: calc(50% - 16px);
+        font-size: 14px;
+        margin: 8px;
+      }
+
+      &__user {
+        display: flex;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 100%;
+      }
+
+      &__name-container {
+        width: calc(100% - 30px);
+      }
+
+      &__name {
+        @include ellipsis;
+        display: block;
+        font-size: 14px;
+        color: #526173;
+        line-height: 16px;
+        position: relative;
+        top: 5px;
+        margin-left: 4px;
+      }
+
+      &__role {
+        display: block;
+        font-size: 12px;
+        font-weight: bold;
+        color: #526173;
+        margin-left: 4px;
+      }
+    }
+
+    input {
+      margin: 8px 0;
+      border-radius: 9999px;
+    }
+  }
+}

@@ -1,0 +1,122 @@
+image: git.hedgehoglab.com:4567/hedgehoglab-internal/docker/docker-aws:latest
+# Use docker-aws as our build container - includes requirements needed for
+# deploying our React app to AWS
+services:
+  - name: docker:dind # dind = Docker in Docker. We are building and running containers, inside containers.
+    entrypoint: ["dockerd-entrypoint.sh"]
+    command: ["--max-concurrent-downloads", "6"]
+
+stages:
+  - build # Build Docker image for this pipeline
+  # - lint_and_test # Run tests on that image
+  - release # Tag image for this branch
+  - deploy # Deploy to AWS
+
+before_script:
+  # Checkout actual branch so we can extract Git metadata
+  - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
+  # Log in to Gitlab Container Registry to pull/push Docker images
+  - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - export CI_BRANCH_SLUG=$(echo ${CI_COMMIT_REF_NAME} | sed -e 's/[^A-Za-z0-9._-]/_/g')
+  - export CI_SLACK_CHANNEL=${CI_SLACK_CHANNEL:-#react-releases}
+
+variables:
+  DOCKER_DRIVER: overlay2
+  # Use the docker daemon provided by DinD
+  DOCKER_HOST: tcp://docker:2375/
+
+build:
+  stage: build
+  script:
+    # Build docker image to be used in pipeline, slack message if failure
+    - ./ci build_docker_for_pipeline || { ./ci job_failure_slack; exit 1; }
+  tags:
+    - docker
+
+# lint:
+#   stage: lint_and_test
+#   script:
+#     # Perform linting, slack message if error
+#     - ./ci lint || { ./ci job_failure_slack; exit 1; }
+#   tags:
+#     - docker
+
+# test:
+#   stage: lint_and_test
+#   coverage: '/Statements\s*:\s*(\d+\.?\d*%)/'
+#   artifacts:
+#     name: "test_output_${CI_PIPELINE_ID}"
+#     paths:
+#       - coverage/
+#     expire_in: 3 days
+#     when: always
+#   script:
+#     # Run tests, slack message if error
+#     - ./ci test || { ./ci job_failure_slack; exit 1; }
+#   tags:
+#     - docker
+
+release:
+  stage: release
+  script:
+    # Release & tag Docker image for this branch, slack message if error
+    - ./ci release_docker_for_branch || { ./ci job_failure_slack; exit 1; }
+  tags:
+    - docker
+
+# Deploy template. Env specific deploys inherit/extend this template
+.deploy_template: &deploy_definition
+  stage: deploy
+  script:
+    # Deploy app, slack message on success/fail
+    - ./ci deploy && ./ci deploy_success_slack || { ./ci deploy_failure_slack; exit 1; }
+  tags:
+    - docker
+
+deploy_dev:
+  <<: *deploy_definition
+  environment:
+    name: DEV
+  only:
+    - develop
+  except:
+    - schedules
+
+deploy_qa:
+  <<: *deploy_definition
+  script:
+    # Deploy app, slack message on success/fail
+    - ./ci deploy && ./ci update_last_qa_release && ./ci deploy_success_slack || { ./ci deploy_failure_slack; exit 1; }
+  environment:
+    name: QA
+  only:
+    - develop
+  when: manual
+  except:
+    - schedules
+
+deploy_uat:
+  <<: *deploy_definition
+  environment:
+    name: UAT
+  only:
+    - master
+  when: manual
+
+deploy_live:
+  <<: *deploy_definition
+  environment:
+    name: LIVE
+  only:
+    - master
+  when: manual
+
+# This is old prod hosted in aws 881660315209
+# deploy_prod:
+#   <<: *deploy_definition
+#   environment:
+#     name: PROD
+#   only:
+#     - master
+#   when: manual
+

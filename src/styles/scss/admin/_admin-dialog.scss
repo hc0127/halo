@@ -1,0 +1,214 @@
+.admin-dialog {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  min-height: 100px;
+  min-width: 100px;
+  z-index: 1001;
+  background-color: white;
+  border-radius: 10px;
+  padding: 32px;
+  &--open {
+    display: block;
+    overflow-y: auto;
+    max-height: 80%;
+  }
+  &--close {
+    display: none;
+  }
+
+  &--beacon-dialog{
+    width:50%;
+  }
+
+  &--reset-password {
+    width: 640px;
+    .email-link-container {
+      display: flex;
+      .admin-button {
+        color: #3a4bc1;
+        font-weight: bold;
+        text-decoration: underline;
+        width: auto;
+        margin: 16px auto;
+      }
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+
+    .admin-field input {
+      width: 100%;
+    }
+
+    .admin-button + .admin-button {
+      margin-left: 53px;
+    }
+  }
+
+  &--create-user,
+  &--edit-user {
+    // 64px for the padding, and 100px to leave a little bit of margin on each side
+    width: calc(100% - 64px - 100px);
+
+    .admin-field__select {
+      &__menu {
+        z-index: 1;
+      }
+
+      &__dropdown-indicator {
+        position: relative;
+      }
+
+      &__indicator-separator {
+        display: none;
+      }
+
+      &__single-value {
+        height: 100%;
+
+        > div {
+          position: relative;
+          top: 9px;
+        }
+      }
+
+      &__value-container {
+        align-items: center;
+        line-height: 20px;
+      }
+
+      &__single-value {
+        align-items: center;
+        display: flex;
+        line-height: 20px;
+        padding-left: 8px;
+      }
+    }
+
+    .admin-page {
+      overflow: visible;
+      padding: 0px;
+
+      .admin-button:first-of-type {
+        margin-right: 10px;
+      }
+    }
+
+    .admin-card {
+      &__title {
+        display: none;
+      }
+      &__body {
+        padding: 0px;
+      }
+    }
+  }
+
+  &--group-details {
+    width: 500px;
+    height: 675px;
+
+    .admin-field input,
+    .admin-field__file-container {
+      width: calc(100% - 4px);
+    }
+
+    .admin-card {
+      margin-top: 0px;
+    }
+
+    hr {
+      margin: 0px;
+      border: 0px;
+      display: block;
+      width: calc(100%);
+      margin: auto;
+      height: 2px;
+      background-color: #979797;
+    }
+
+    .add-users {
+      position: relative;
+    }
+    .searched-users {
+      position: absolute;
+      top: 55px;
+      left: 2px;
+      right: 2px;
+      z-index: 10;
+      background-color: #e6e6e6;
+      color: #526173;
+      margin: 2px;
+      display: none;
+      max-height: 38px * 9;
+      overflow: auto;
+      &--visible {
+        display: block;
+      }
+
+      .searched-user {
+        display: flex;
+        height: 37px;
+
+        &:hover {
+          background-color: darken(#e6e6e6, 10%);
+        }
+        button {
+          border: none;
+          background-color: transparent;
+          display: flex;
+          padding: 8px 10px;
+          width: 100%;
+        }
+      }
+    }
+
+    .admin-table__body {
+      height: 224px;
+      border: 1px solid #979797;
+      margin-bottom: 0px;
+    }
+  }
+
+  &--confirm {
+    .admin-title {
+      margin-bottom: 16px;
+    }
+    .button-panel {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+  }
+
+  .admin-page {
+    padding: 0px;
+    height: 100%;
+  }
+}
+
+.admin-dialog-overlay {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  display: block;
+  z-index: 1000;
+  width: 100%;
+  border: none;
+  background: #d8d8d8;
+  opacity: 0.6;
+
+  &--open {
+    visibility: visible;
+  }
+  &--close {
+    visibility: hidden;
+  }
+}

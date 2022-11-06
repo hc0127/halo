@@ -1,0 +1,131 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Sets up a Cloudtrail across all regions which logs to S3
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  DatadogLoggingLambdaFunctionArn:
+    Default: ''
+    Description: ARN of the Datadog Lambda function used to process logs - in this case CloudFront Access Logs
+    Type: String
+
+  S3DataEvents:
+    Default: false
+    Description: Whether to log S3 data events (accessing objects)
+    Type: String
+
+Outputs:
+
+  BucketName:
+    Value: !Ref Bucket
+
+  BucketArn:
+    Value: !GetAtt Bucket.Arn
+
+  TrailArn:
+    Value: !GetAtt Trail.Arn
+
+Conditions:
+
+  IntegrateDatadog: !Not [ !Equals [!Ref DatadogLoggingLambdaFunctionArn, ''] ]
+
+  IncludeS3DataEvents: !Equals [!Ref S3DataEvents, 'true']
+
+Resources:
+
+  # Bucket to store cloudtrail logs
+  Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      BucketName: !Sub "trail-${AWS::AccountId}-${Project}-${Environment}"
+      LifecycleConfiguration:
+        Rules:
+          - Status: Enabled
+            Id: DeleteLogsOlderThan90Days
+            ExpirationInDays: 90
+      NotificationConfiguration: !If
+        - IntegrateDatadog
+        - LambdaConfigurations:
+            - Event: s3:ObjectCreated:*
+              Function: !Ref DatadogLoggingLambdaFunctionArn
+        - !Ref AWS::NoValue
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: Name
+          Value: !Sub "trail-${AWS::AccountId}-${Project}-${Environment}"
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+
+  # Policy allowing Cloudtrail principal access and enforcing https
+  BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref Bucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AWSCloudTrailAclCheck
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: 's3:GetBucketAcl'
+            Resource: !Sub 'arn:aws:s3:::${Bucket}'
+          - Sid: AWSCloudTrailWrite
+            Effect: Allow
+            Principal:
+              Service: 'cloudtrail.amazonaws.com'
+            Action: 's3:PutObject'
+            Resource: !Sub 'arn:aws:s3:::${Bucket}/AWSLogs/${AWS::AccountId}/*'
+            Condition:
+              StringEquals:
+                's3:x-amz-acl': 'bucket-owner-full-control'
+          - Sid: EnforceHttps
+            Action: s3:*
+            Effect: Deny
+            Principal: "*"
+            Resource: !Sub "arn:aws:s3:::${Bucket}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": false
+
+  Trail:
+    DependsOn:
+      - BucketPolicy
+    Type: 'AWS::CloudTrail::Trail'
+    Properties:
+      EnableLogFileValidation: true
+      EventSelectors: !If
+        - IncludeS3DataEvents
+        - [{DataResources: [{Type: 'AWS::S3::Object', Values: ['arn:aws:s3:::']}], IncludeManagementEvents: true, ReadWriteType: All}]
+        - !Ref AWS::NoValue
+      IncludeGlobalServiceEvents: true
+      IsLogging: true
+      IsMultiRegionTrail: true
+      S3BucketName: !Ref Bucket
+      TrailName: !Sub "${Project}-${Environment}-trail"
+      Tags:
+        - Key: Name
+          Value: !Sub "${Project}-${Environment}-trail"
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment

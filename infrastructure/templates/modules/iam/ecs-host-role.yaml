@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >
+  Create a role to be used by ECS hosts (EC2 instances)
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  ClusterName:
+    Description: Name of cluster that ECS host will be a member of
+    Type: String
+
+  RepositoryArns:
+    Description: Arns of container repositories that ECS host will pull images from
+    Type: CommaDelimitedList
+
+Outputs:
+
+  Name:
+    Description: Name of role created
+    Value: !Ref ECSHostRole
+
+  Arn:
+    Description: Arn of role created
+    Value: !GetAtt ECSHostRole.Arn
+
+Resources:
+
+# #### ECS Task Role
+# Role to be assumed by ECS task
+# ####
+  ECSHostRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - !Ref ECSHostPolicy
+
+# #### ECS Host Policy
+# Contains permissions needed for ECS host instances to operate
+# Such as managing container instances for cluster, downloading images from registry and logging
+# ####
+  ECSHostPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+            - ecs:CreateCluster
+            - ecs:DiscoverPollEndpoint
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ecs:DeregisterContainerInstance
+            - ecs:RegisterContainerInstance
+            - ecs:Submit*
+          Resource:
+            - !Sub "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${ClusterName}"
+        - Effect: Allow
+          Action:
+            - ecs:Poll
+            - ecs:StartTelemetrySession
+          Condition:
+            ArnEquals:
+              "ecs:cluster": !Sub "arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${ClusterName}"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ecr:GetAuthorizationToken
+            - ecr:BatchCheckLayerAvailability
+            - ecr:GetDownloadUrlForLayer
+            - ecr:BatchGetImage
+          Resource: !Ref RepositoryArns
+        - Effect: Allow
+          Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"

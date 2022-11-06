@@ -1,0 +1,22 @@
+.admin-notification {
+  background-color: #3a4bc1;
+  color: white;
+  font-family: "clearsans_regular";
+  z-index: 100;
+  position: fixed;
+  left: 200px;
+  padding: 16px;
+  display: flex;
+  border-radius: 10px;
+  box-shadow: 0 2px 13px 0 rgba(0, 0, 0, 0.25);
+  margin: 24px;
+  bottom: 0px;
+  z-index: 101;
+
+  .admin-button {
+    font-size: 32px;
+    line-height: 12px;
+    height: auto;
+    width: auto;
+  }
+}

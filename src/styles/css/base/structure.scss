@@ -1,0 +1,51 @@
+@font-face {
+  font-family: "clearsans_regular";
+  font-weight: normal;
+  src: url(../../css/webfonts/clearsans_regular_macroman/ClearSans-Regular-webfont.eot);
+  src: url(../../css/webfonts/clearsans_regular_macroman/ClearSans-Regular-webfont.eot?iefix) format("eot"),
+    url(../../css/webfonts/clearsans_regular_macroman/ClearSans-Regular-webfont.woff) format("woff"),
+    url(../../css/webfonts/clearsans_regular_macroman/ClearSans-Regular-webfont.ttf) format("truetype"),
+    url(../../css/webfonts/clearsans_regular_macroman/ClearSans-Regular-webfont.svg#webfont) format("svg");
+}
+
+@font-face {
+  font-family: "clearsans_regular";
+  font-weight: bold;
+  src: url(../../css/webfonts/clearsans_bold_macroman/ClearSans-Bold-webfont.eot);
+  src: url(../../css/webfonts/clearsans_bold_macroman/ClearSans-Bold-webfont.eot?iefix) format("eot"),
+    url(../../css/webfonts/clearsans_bold_macroman/ClearSans-Bold-webfont.woff) format("woff"),
+    url(../../css/webfonts/clearsans_bold_macroman/ClearSans-Bold-webfont.ttf) format("truetype"),
+    url(../../css/webfonts/clearsans_bold_macroman/ClearSans-Bold-webfont.svg#webfont) format("svg");
+}
+
+.base {
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+html {
+  background-color: #212f40;
+}
+
+body {
+  font-family: "clearsans_regular", sans-serif;
+  overflow-x: hidden;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "clearsans_regular", sans-serif;
+  font-weight: bold;
+}
+input[type="file"] {
+  color: white;
+  background-color: $primary-button-color;
+}
+
+@media only print {
+  .base {
+    overflow: visible;
+  }
+}

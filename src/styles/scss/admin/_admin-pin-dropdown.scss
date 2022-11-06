@@ -1,0 +1,50 @@
+.admin-pin-dropdown {
+  display: flex;
+  width: 100%;
+
+  .admin-field {
+    width: 100%;
+    min-width: 120px;
+
+    &__select__menu {
+      width: 100%;
+    }
+  }
+
+  .button-with-icon {
+    margin-top: 20px;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  &__option {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: #526173;
+
+    .admin-field__select__single-value & {
+      width: calc(100% - 8px);
+    }
+
+    img {
+      height: 21px;
+    }
+  }
+
+  .dashboard-pin-icon {
+    position: relative;
+    top: 15px;
+    height: 45px;
+  }
+
+  &__upload-button {
+    visibility: hidden;
+
+    &--visible {
+      visibility: visible;
+    }
+  }
+}

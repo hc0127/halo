@@ -1,0 +1,67 @@
+.ban-list {
+  height: 100%;
+  overflow: auto;
+
+  &__container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  h3 {
+    color: #fff;
+    background: $color-blue;
+    padding: 8px;
+    height: 24px;
+  }
+
+  &__item {
+    width: calc(25% - 16px);
+    margin: 8px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    overflow: hidden;
+    min-height: 425px;
+
+    &__actions {
+      float: right;
+    }
+
+    &__content {
+      display: flex;
+    }
+
+    &__image {
+      margin: 8px 16px;
+      flex: 0 0 0px;
+      max-width: 150px;
+      max-height: 150px;
+
+      .Image img {
+        max-width: 150px;
+        max-height: 150px;
+      }
+    }
+
+    &__details {
+      flex: 1 0;
+      margin: 8px 16px;
+      max-width: calc(100% - 64px);
+
+      & &__title {
+        font-size: 12px;
+        font-weight: normal;
+      }
+
+      div {
+        font-size: 14px;
+        word-wrap: break-word;
+
+        &.red {
+          color: red;
+        }
+      }
+    }
+  }
+}

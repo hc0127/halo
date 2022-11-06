@@ -1,0 +1,23 @@
+.alert-box {
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 10px;
+  font-weight: bold;
+
+  &--success {
+    color: #3c763d;
+  }
+
+  &--info {
+    color: #31708f;
+  }
+
+  &--warning {
+    color: #8a6d3b;
+  }
+
+  &--danger {
+    color: #d61600;
+  }
+}

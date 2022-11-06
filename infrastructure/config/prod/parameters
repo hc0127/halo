@@ -1,0 +1,4 @@
+Project=halo
+Environment=prod
+CloudFrontAcmCertificateArn=arn:aws:acm:us-east-1:881660315209:certificate/68aefdd1-39ee-455d-a7aa-14ac83321e45
+CloudFrontAliases=halosystem.halosolutions.com

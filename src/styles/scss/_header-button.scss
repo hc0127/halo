@@ -1,0 +1,41 @@
+.header-button {
+  $basecolor: #3a4bc1;
+
+  .Button {
+    padding: 10px 25px 10px 40px;
+    margin: 0px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    line-height: 20px;
+    position: relative;
+    box-shadow: 0 11px 13px rgba($basecolor, 0.4);
+    &:hover,
+    :active {
+      background-color: darken($basecolor, 10%);
+    }
+
+    div.Icon {
+      margin-right: 5px;
+    }
+
+    i {
+      font-style: normal;
+      background-color: yellow;
+      position: absolute;
+      width: 27px;
+      height: 27px;
+      line-height: 27px;
+      top: 7px;
+      left: 7px;
+      border-radius: 14px;
+      text-align: center;
+      color: #3a4bc1;
+    }
+    span {
+      display: inline-flex;
+      padding-left: 5px;
+    }
+  }
+}

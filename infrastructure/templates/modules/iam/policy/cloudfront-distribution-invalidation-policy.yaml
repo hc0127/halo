@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy allowing the creation of CloudFront Distribution Invalidations
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  CloudFrontDistribution:
+    Description: CloudFront Distribution ID
+    Type: String
+
+Outputs:
+
+  PolicyArn:
+    Value: !Ref CloudFrontDistributionInvalidationManagedPolicy
+
+Resources:
+
+# #### CloudFront Distribution Invalidation Managed Policy
+# Allow to create a cache invalidation for the distribution
+# ####
+  CloudFrontDistributionInvalidationManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - cloudfront:ListInvalidations
+              - cloudfront:CreateInvalidation
+              - cloudfront:GetDistribution
+            Resource:
+              - "*"
+              # Can't specify individual distribution yet ;(
+              #- !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"

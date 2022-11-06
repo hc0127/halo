@@ -1,0 +1,4 @@
+Project=halo
+Environment=load
+CloudFrontAcmCertificateArn=arn:aws:acm:us-east-1:307570990445:certificate/5fda6094-c847-4e2d-b547-d54c2dcb5650
+CloudFrontAliases=web.load.halosolutions.com

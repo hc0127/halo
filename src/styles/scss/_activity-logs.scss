@@ -1,0 +1,192 @@
+.activity-logs {
+  background-color: #002c7c;
+  color: $white;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex: 0 0 33%;
+  flex-direction: column;
+
+  h2 {
+    color: $white;
+    line-height: 42px;
+  }
+
+  &__log_message_btn:hover {
+    text-decoration: underline;
+    color: yellow;
+    cursor: pointer;
+  }
+
+  &__filter-select {
+    color: black;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+    & &__menu {
+      z-index: 20;
+    }
+  }
+
+  &__header {
+    align-items: center;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2px 16px 0;
+    position: relative;
+    z-index: 1;
+    font-size: 16px;
+
+    & > h3 {
+      color: white;
+    }
+
+    > * {
+      flex: 1;
+    }
+
+    button {
+      align-items: center;
+      display: flex;
+      font-size: 14px;
+      margin-right: 10px;
+      max-width: 124px;
+      padding: 0px 10px;
+      width: auto;
+
+      .icon {
+        background: #fff400;
+        border-radius: 50%;
+
+        &:before {
+          color: #3a4bc1;
+        }
+      }
+    }
+  }
+
+  &__body {
+    flex: 1;
+    padding: 0px 16px;
+    overflow: auto;
+    position: relative;
+    z-index: 0;
+
+    .dashboard-button {
+      display: table;
+      margin: 8px auto;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    > table {
+      tbody {
+        position: relative;
+      }
+
+      tr.activity-logs__group-header {
+        td {
+        }
+      }
+
+      td {
+        height: 30px;
+        &:first-child {
+          padding-left: 0px;
+        }
+        &:last-child {
+          padding-right: 1px;
+        }
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 0.5em;
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #000d7c;
+      outline: 1px solid slategrey;
+    }
+  }
+
+  &__group-header {
+    text-align: center;
+
+    > td {
+      position: sticky;
+
+      top: 0px;
+      background-color: #002c7c;
+      z-index: 10;
+
+      &::after {
+        background: rgba(204, 214, 222, 0.4);
+        content: '';
+        bottom: 0px;
+        height: 1px;
+        left: 0px;
+        position: absolute;
+        width: 100%;
+      }
+    }
+    span {
+      padding: 5px 10px;
+      background: rgba(208, 208, 208, 0.3);
+      border-radius: 20px;
+      color: $white;
+      margin: 15px auto;
+      font-size: 15px;
+    }
+  }
+
+  &__list-item {
+    border-bottom: 1px solid rgba(204, 214, 222, 0.4);
+
+    &__time {
+      width: 12%;
+      max-width: 12%;
+      opacity: 0.6;
+      font-size: 0.75rem;
+    }
+
+    &__description {
+      line-height: 16px;
+      font-size: 0.75rem;
+    }
+
+    .Icon {
+      background-size: 75%;
+      position: relative;
+    }
+
+    &__name {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+
+    &__type {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      text-align: right;
+      white-space: nowrap;
+    }
+  }
+
+  .activity-logs__group-header > td {
+    @include safari-10-1-plus-only {
+      position: relative;
+    }
+  }
+}

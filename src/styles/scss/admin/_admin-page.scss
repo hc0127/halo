@@ -1,0 +1,19 @@
+.admin-page {
+  height: calc(100% - 90px);
+  overflow: auto;
+  padding: 45px;
+  position: relative;
+
+  &__close-button {
+    position: absolute;
+    top: 45px;
+    right: 45px;
+  }
+}
+
+.admin-form-table {
+  width: 100%;
+  tr {
+    height: 80px;
+  }
+}

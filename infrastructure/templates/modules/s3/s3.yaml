@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: S3 bucket for asset storage. Currently public.
+Parameters:
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+  Environment:
+    Description: Environment
+    Type: String
+  AllowedOrigins:
+    Description: Origins allowed to make cross domain requests to bucket, comma-separated
+    Type: String
+    Default: 'NONE'
+
+Conditions:
+
+  CORSEnabled: !Not [ !Equals [ !Ref AllowedOrigins, NONE ] ]
+
+Outputs:
+  S3BucketId:
+    Description: Name of s3 bucket created
+    Value: !Ref S3Bucket
+Resources:
+# #### S3 Bucket
+# Store assets within
+# ####
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      CorsConfiguration: !If
+          - CORSEnabled
+          - CorsRules:
+            - AllowedHeaders: [ '*' ]
+              AllowedMethods: [ GET, POST, PUT, DELETE ]
+              AllowedOrigins: !Split [ ',', !Ref AllowedOrigins ]
+              MaxAge: 3000
+          - !Ref AWS::NoValue
+      Tags:
+        - Key: Name
+          Value: !Sub "s3-${Project}-${Environment}"
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+# #### S3 Bucket Policy
+# Policy to apply to the bucket.
+# Gives public access to objects
+# ####
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Statement:
+          - Action: s3:GetObject
+            Effect: Allow
+            Principal: "*"
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
+          - Action: s3:*
+            Effect: Deny
+            Principal: "*"
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": false

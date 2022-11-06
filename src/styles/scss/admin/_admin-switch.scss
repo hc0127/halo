@@ -1,0 +1,97 @@
+.admin-switch-container {
+  width: 220px;
+  margin-bottom: 20px;
+}
+
+.admin-switch {
+  $height: 20px;
+  $border: 2px;
+  $width: 40px;
+  $ball-size: $height - $border * 2 * 2;
+  $switch-blue: #353da4;
+  $switch-grey: #a4acb5;
+  $switch-red: #ff4000;
+  $switch: &;
+
+  margin: 8px;
+
+  & > label {
+    color: #a4acb5;
+    line-height: $height;
+    margin-left: 5px;
+  }
+
+  &__nice-switch {
+    position: relative;
+    display: inline-block;
+    width: $width;
+    height: $height;
+  }
+  &__field {
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+  }
+
+  &--primary {
+    #{$switch}__css-switch {
+      border-color: $switch-blue;
+    }
+    #{$switch}__field:checked + #{$switch}__css-switch {
+      &:before {
+        background-color: $switch-blue;
+      }
+    }
+  }
+
+  &--secondary {
+    #{$switch}__css-switch {
+      border-color: $switch-red;
+    }
+    #{$switch}__field:checked + #{$switch}__css-switch {
+      &:before {
+        background-color: $switch-red;
+      }
+    }
+  }
+
+  &__field:checked + &__css-switch {
+    &:before {
+      transform: translateX($width - ($border * 4) - $ball-size);
+    }
+  }
+
+  &__css-switch {
+    position: absolute;
+    cursor: pointer;
+    border-radius: $height;
+    border: $border solid;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+
+    &:before {
+      border-radius: $height;
+      position: absolute;
+      content: "";
+      height: $ball-size;
+      width: $ball-size;
+      left: $border;
+      bottom: $border;
+      background-color: $switch-grey;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    * {
+      cursor: not-allowed;
+    }
+  }
+}

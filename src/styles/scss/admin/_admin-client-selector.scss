@@ -1,0 +1,12 @@
+.admin-client-selector {
+  height: 57px;
+  margin-bottom: 16px;
+  max-width: 300px;
+
+  &__client-name {
+    white-space: nowrap;
+    line-height: 37px;
+    font-size: 18px;
+    color: #526173;
+  }
+}

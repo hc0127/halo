@@ -1,0 +1,72 @@
+.report-ticket-scanning-container {
+  padding-top: 33px;
+  height: calc(100vh - 80px - 33px);
+  & .SectionTitle {
+    margin-bottom: 40px;
+  }
+
+  &__csv-download {
+    margin-bottom: 40px;
+  }
+
+  &__data-container {
+    display: inline-block;
+    flex-wrap: wrap;
+    flex-direction: row;
+    line-height: initial;
+
+    &--chart-data {
+      padding-right: 11px;
+      width: 50%;
+      position: relative;
+      box-sizing: border-box;
+      float: left;
+
+      &__chart {
+        float: left;
+        margin-top: 40px;
+
+        & .selector {
+          border: 0.5px solid #979797;
+          padding-bottom: 2px;
+          float: right;
+          margin: 20px 0;
+
+          & select {
+            background-color: #ffffff;
+          }
+        }
+      }
+
+      &__capacity-counter {
+        width: 60%;
+        display: inline-block;
+        float: left;
+        margin-left: 23px;
+      }
+
+      &__total-entries {
+        width: calc(40% - 23px);
+        display: inline-block;
+        float: left;
+      }
+    }
+
+    &--staff-data {
+      float: left;
+      padding-left: 11px;
+      width: 50%;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.ticket-scanning-report-inner {
+  width: calc(100% - 48px);
+  margin: 0 auto;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0 15px 12px 0 rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,143 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Top-level stack that brings in all CF modules needed for dev & qa project setup for react web application.
+
+Parameters:
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  # parameter for setting up react
+  SetUpReact:
+    AllowedValues: [true, false]
+    Description: For setting up a react project for Web
+    Type: String
+    Default: true
+
+  CloudFrontAliases:
+    Description: A comma separated list of CNAME aliases to set up for the CloudFront Distribution
+    Type: String
+    Default: 'NONE'
+
+  CloudFrontAcmCertificateArn:
+    Description: Arn for a custom ACM HTTPS certificate. Use this in combination with CloudFrontAliases.
+    Type: String
+    Default: 'NONE'
+
+  AllowedOrigins:
+    Description: Origins allowed to make cross domain requests to bucket, comma-separated
+    Type: String
+    Default: 'NONE'
+
+  ViewerProtocolPolicy:
+    Description: Controls what HTTP protocol viewers use to access CloudFront
+    Type: String
+    Default: redirect-to-https
+
+Conditions:
+  # Is there a react setup for project or not
+  HasReact: !Equals [!Ref SetUpReact, true]
+
+Outputs:
+  Region:
+    Description: Region the stack has been created in
+    Value: !Ref AWS::Region
+
+  # checks conditions for react
+  ReactDeployBucketName:
+    Condition: HasReact
+    Description: Name of s3 bucket created
+    Value: !GetAtt S3WebsiteStack.Outputs.Id
+
+  ReactCloudFrontDistributionId:
+    Condition: HasReact
+    Description: CloudFront Distribution ID
+    Value: !GetAtt S3WebsiteCloudFrontDistribution.Outputs.DistributionId
+
+  ReactCloudFrontDistributionDomain:
+    Condition: HasReact
+    Description: CloudFront Distribution domain / URL
+    Value: !GetAtt S3WebsiteCloudFrontDistribution.Outputs.DistributionDomainName
+
+  ReactDeployAccessKeyId:
+    Condition: HasReact
+    Description: Key ID for AWS API access
+    Value: !GetAtt IAMDeployUserStack.Outputs.IAMAccessKeyId
+
+  ReactDeploySecretAccessKey:
+    Condition: HasReact
+    Description: Key secret for AWS API access
+    Value: !GetAtt IAMDeployUserStack.Outputs.IAMAccessKeySecret
+
+Resources:
+  # CloudTrail
+  ##CloudtrailStack:
+  #  Type: AWS::CloudFormation::Stack
+  #      Parameters:
+  #   Project: !Ref Project
+  #    Environment: !Ref Environment
+
+  # React Front End Web App Infrastructure
+
+  #For S3website will configure access control and website configuration
+  S3WebsiteStack:
+    Condition: HasReact
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: modules/s3/s3-website.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+  #To distribute the traffic and will check the certificate requirement
+  S3WebsiteCloudFrontDistribution:
+    Condition: HasReact
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: modules/cloudfront/s3-website-cloudfront-distribution.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        S3WebsiteURL: !GetAtt S3WebsiteStack.Outputs.URL
+        CloudFrontAliases: !Ref CloudFrontAliases
+        CloudFrontAcmCertificateArn: !Ref CloudFrontAcmCertificateArn
+        ViewerProtocolPolicy: !Ref ViewerProtocolPolicy
+  # IAM policy to upload/deploy into S3 bucket
+  S3DeployPolicyStack:
+    Condition: HasReact
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: modules/iam/policy/s3-deploy-policy.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        S3Bucket: !GetAtt S3WebsiteStack.Outputs.Id
+  # To invalidate the CloudFront distribution caches when new version deployed that helps to get the latest version always
+  CloudFrontDistributionInvalidationPolicyStack:
+    Condition: HasReact
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: modules/iam/policy/cloudfront-distribution-invalidation-policy.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        CloudFrontDistribution: !GetAtt S3WebsiteCloudFrontDistribution.Outputs.DistributionId
+  # To create access key pairs
+  IAMDeployUserStack:
+    Condition: HasReact
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: modules/iam/iam-access-key.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        ManagedPolicyArns: !Join
+          - ','
+          - [
+              !GetAtt S3DeployPolicyStack.Outputs.PolicyArn,
+              !GetAtt CloudFrontDistributionInvalidationPolicyStack.Outputs.PolicyArn,
+            ]

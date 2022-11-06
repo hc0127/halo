@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A managed policy defining access to necessary codedeploy buckets for EC2 autoscaling deployments
+
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  CodeDeployBucket:
+    Description: Name of bucket, NOT arn
+    Type: String
+
+Outputs:
+
+  ManagedPolicy:
+    Value: !Ref S3CodeDeployManagedPolicy
+
+Resources:
+
+# #### S3 CodeDeploy policy
+# Allowing read access to a set of CodeDeploy buckets owned by AWS, which host the CodeDeploy agent our EC2
+# instances will need. Also allows read access to our CodeDeploy bucket that hosts application revisions for deployments
+# ####
+  S3CodeDeployManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Path: "/"
+      PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - s3:List*
+              - s3:Get*
+            Resource:
+              - !Sub "arn:aws:s3:::aws-codedeploy-${AWS::Region}/*"
+              - !Sub "arn:aws:s3:::${CodeDeployBucket}/*"

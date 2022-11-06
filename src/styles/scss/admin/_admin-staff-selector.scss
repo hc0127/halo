@@ -1,0 +1,32 @@
+.admin-staff-selector {
+  display: flex;
+
+  .admin-card {
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    &__title {
+      margin-bottom: 8px;
+    }
+  }
+
+  > :first-child {
+    flex: 0 1 72px;
+    flex-grow: 1;
+  }
+
+  > :nth-child(2) {
+    flex: 0 1 72px;
+    text-align: center;
+    margin-top: 143px;
+
+    .button-with-icon + .button-with-icon {
+      margin-top: 15px;
+    }
+  }
+
+  > :last-child {
+    flex: 0 1 72px;
+    flex-grow: 1;
+  }
+}

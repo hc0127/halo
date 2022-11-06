@@ -1,0 +1,164 @@
+.edit-check-view {
+  background-color: #f7f8f8;
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    min-height: 40px;
+    padding: 16px;
+
+    .title {
+      margin-bottom: 4px;
+      padding: 0;
+    }
+
+    &__description {
+      font-size: 14px;
+      color: $color-grey-dark;
+      white-space: pre-wrap;
+    }
+  }
+
+  &__actions {
+    min-height: 56px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__tab {
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(#4a4a4a, 0.4);
+    background-color: #eff1f1;
+    padding: 16px 24px;
+
+    &--active {
+      color: #4a4a4a;
+      background-color: white;
+    }
+  }
+
+  &__buttons {
+    align-self: center;
+    margin-right: 32px;
+  }
+
+  &__content {
+    flex: 1;
+    overflow: auto;
+    height: 100%;
+    background-color: white;
+
+    > * {
+      height: 100%;
+    }
+  }
+
+  &__report-button {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    font-size: 20px;
+    background-color: $color-blue;
+    color: white;
+    height: 48px;
+    border-radius: 24px;
+    border: none;
+    padding-right: 16px;
+    outline: 0;
+    box-shadow: 0 12px 13px 0 rgba($color-blue, 0.5);
+
+    img {
+      width: 30px;
+      margin-right: 8px;
+    }
+  }
+
+  &__details {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 0;
+
+    &__row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      &--with-map {
+        align-items: flex-start;
+      }
+    }
+
+    &__field {
+      flex: 0 0 30%;
+      box-sizing: border-box;
+      padding: 14px;
+      text-align: right;
+      color: $color-text-black;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    &__value {
+      display: flex;
+      box-sizing: border-box;
+      flex: 0 0 70%;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 14px;
+      text-align: left;
+      color: $color-grey-dark;
+      font-size: 14px;
+
+      > .icon,
+      > .Icon {
+        margin: 0 4px 0 12px !important;
+
+        &,
+        &:before {
+          color: inherit;
+        }
+      }
+
+      &__image {
+        display: block;
+        width: 240px;
+        border-radius: 4px;
+        cursor: pointer;
+        background: $color-light-grey no-repeat center center / cover;
+
+        &::after {
+          display: block;
+          content: "";
+          width: 100%;
+          padding-top: 100%;
+        }
+      }
+    }
+
+    &__map {
+      display: block;
+      position: relative;
+      height: 260px;
+      width: 100%;
+
+      > div {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+}

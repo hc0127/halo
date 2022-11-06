@@ -1,0 +1,33 @@
+.dashboard-group-filter {
+  & &__select {
+    &__control {
+      border-radius: 20px;
+      border: 1px solid rgba(82, 97, 115, 0.2);
+      height: 36px;
+    }
+
+    &__indicator-separator {
+      visibility: hidden;
+    }
+    &__menu {
+      z-index: 10;
+    }
+    &__menu-list {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    &__option {
+      border-bottom: 1px solid #d6dce6;
+      cursor: pointer;
+    }
+    &__group-heading {
+      border-bottom: 1px solid #d6dce6;
+      margin-top: 16px;
+      text-transform: none;
+    }
+    &__dropdown-indicator {
+      color: rgba(82, 97, 115, 0.2);
+    }
+  }
+}

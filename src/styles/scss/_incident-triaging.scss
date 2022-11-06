@@ -1,0 +1,51 @@
+$dash-button: ".dashboard-button";
+
+.incident-triaging {
+  background-color: #4456cd;
+  padding: 8px;
+  padding-bottom: 0px;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    max-height: 48px * 3;
+    overflow: auto;
+  }
+
+  &__list-item {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    min-height: 48px;
+    width: 100%;
+
+    > button {
+      display: flex;
+    }
+
+    img {
+      margin: 4px 8px 0px 0px;
+    }
+
+    &__text-container {
+      text-align: left;
+    }
+
+    .title {
+      margin: 0px;
+    }
+
+    #{$dash-button}--warning {
+      justify-self: center;
+      min-width: auto;
+      margin-left: auto;
+      max-height: 36px;
+      justify-content: center;
+      padding: 4px 24px;
+    }
+  }
+
+  & + .incidents {
+    padding-top: 0px;
+  }
+}

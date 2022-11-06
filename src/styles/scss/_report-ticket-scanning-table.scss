@@ -1,0 +1,61 @@
+.report-ticket-scanning-table {
+  width: 100%;
+
+  & thead tr th {
+    background-color: #d8d8d8;
+    padding: 7px 0;
+    font-size: 14px;
+    color: #526173;
+    font-weight: normal;
+  }
+
+  & tbody tr td {
+    padding: 12px 0;
+    color: #4a4a4a;
+    font-size: 14px;
+    border-bottom: 1px solid #526173;
+  }
+
+  & .initials-icon {
+    background-color: #d6dce6;
+    font-size: 14px;
+    color: #99aabe;
+    border-radius: 100px;
+    padding: 5px;
+  }
+
+  & .no-data-message {
+    text-align: center;
+  }
+}
+
+.staff-table-pagination {
+  float: right;
+  margin-top: 27px;
+
+  & ul li {
+    display: inline-block;
+    float: left;
+
+    & button {
+      background: none;
+      border: none;
+      outline: none;
+      width: 40px;
+      height: 36px;
+    }
+  }
+
+  & .previous-link button, .next-link button {
+    font-size: 28px;
+  }
+
+  & .page-number {
+    color: #526173;
+    font-weight: bold;
+  }
+
+  & .active {
+    color: #353ea3;
+  }
+}

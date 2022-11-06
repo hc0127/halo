@@ -1,0 +1,24 @@
+.custom_ban_table{
+  min-width: 400px;
+  width: 90%;
+	margin: auto;
+	margin-top: 20px;
+	border: 2px solid #dddddd;
+	td, th {
+		text-align: left;
+		padding: 8px;
+	}
+	th {
+		background-color: rgb(27, 50, 99);
+		color: white;
+	}
+}
+
+.title_bulletin_board {
+	margin-left: 50px;
+}
+
+.table_header {
+	margin: auto;
+	width: 90%;
+}

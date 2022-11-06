@@ -1,0 +1,81 @@
+.venue-checks-page {
+  overflow: hidden;
+  height: calc(100% - 80px);
+  position: relative;
+  margin-left: 80px;
+
+  &__container {
+    display: flex;
+    height: 100%;
+  }
+
+  &__left-panel {
+    background-color: #fff;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 50%;
+    height: auto;
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      padding: 25px 25px 40px;
+
+      &__search {
+        margin-right: 40px;
+
+        input {
+          border-radius: 20px;
+          border: 1px solid $color-text-black;
+          padding: 8px;
+          margin-left: 16px;
+          min-width: 200px;
+        }
+      }
+
+      &__filter {
+        &.selector {
+          border: solid 1px #626262;
+        }
+
+        select {
+          margin-bottom: 2px;
+        }
+      }
+
+      &__items-summary {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 0 40px 20px;
+
+        &__name {
+          margin: 0 20px 2px 0;
+          color: $color-text-black;
+          font-weight: bold;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  &__right-panel {
+    align-items: center;
+    justify-content: center;
+    background-color: #f7f8f8;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+
+    h3 {
+      color: #3a4bc1;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: $color-text-black;
+    }
+  }
+}

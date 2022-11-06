@@ -1,0 +1,155 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFront CDN infront of S3 bucket for public assets. Anyone can download, only authenticated users can upload.
+Parameters:
+
+  Project:
+    AllowedPattern: '[a-z0-9]+'
+    Description: Project name (alphanumeric)
+    Type: String
+
+  Environment:
+    Description: Environment
+    Type: String
+
+  AllowedOrigins:
+    Description: Origins allowed to make cross domain requests to bucket, comma-separated
+    Type: String
+    Default: 'NONE'
+
+  CloudFrontAliases:
+    Description: A comma separated list of CNAME aliases to set up for the CloudFront Distribution
+    Type: String
+    Default: 'NONE'
+
+  CloudFrontAcmCertificateArn:
+    Description: Arn for a custom ACM HTTPS certificate. Use this in combination with CloudFrontAliases.
+    Type: String
+    Default: 'NONE'
+
+  ViewerProtocolPolicy:
+    Description: Controls what HTTP protocol viewers use to access CloudFront
+    Type: String
+    Default: redirect-to-https
+
+  PriceClass:
+    Description: Controls which edge locations we deploy to (more locations = higher cost). See https://aws.amazon.com/cloudfront/pricing/
+    Type: String
+    AllowedValues: ['PriceClass_100', 'PriceClass_200', 'PriceClass_All']
+    Default: PriceClass_100
+
+Conditions:
+
+  CORSEnabled: !Not [ !Equals [ !Ref AllowedOrigins, NONE ] ]
+
+  UseCustomCloudFrontAliases: !Not [ !Equals [ !Ref CloudFrontAliases, 'NONE' ] ]
+
+  UseCustomCloudFrontAcmCertificate: !Not [ !Equals [ !Ref CloudFrontAcmCertificateArn, 'NONE' ] ]
+
+Outputs:
+
+  S3BucketId:
+    Description: Name of s3 bucket created
+    Value: !Ref S3Bucket
+
+  S3BucketArn:
+    Description: Arn of s3 bucket
+    Value: !GetAtt S3Bucket.Arn
+
+  S3DomainName:
+    Description: Domain name for s3 bucket
+    Value: !GetAtt S3Bucket.DomainName
+
+  DistributionId:
+    Description: CloudFront Distribution ID
+    Value: !Ref CloudFrontDistribution
+
+  DistributionDomainName:
+    Description: CloudFront Distribution domain / URL
+    Value: !GetAtt CloudFrontDistribution.DomainName
+
+Resources:
+
+# #### S3 Bucket
+# Store assets within
+# ####
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      CorsConfiguration: !If
+          - CORSEnabled
+          - CorsRules:
+            - AllowedHeaders: [ '*' ]
+              AllowedMethods: [ GET, POST, PUT, DELETE ]
+              AllowedOrigins: !Split [ ',', !Ref AllowedOrigins ]
+              MaxAge: 3000
+          - !Ref AWS::NoValue
+      Tags:
+        - Key: Name
+          Value: !Sub "public-s3-${Project}-${Environment}"
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment
+
+# #### S3 Bucket Policy
+# Policy to apply to the bucket.
+# Gives public access to download objects
+# ####
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Statement:
+          - Action: s3:GetObject
+            Effect: Allow
+            Principal: "*"
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
+
+# #### CloudFront Distribution
+# A CF Distribution to the public uploads S3 bucket
+# We can use cloudfront default domain or pass CloudFrontAliases and CloudFrontAcmCertificateArn to use custom domain,
+# with HTTPS enabled only on this domain
+# Configure edge locations with PriceClass
+# ####
+  CloudFrontDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        Aliases: !If
+          - UseCustomCloudFrontAliases
+          - !Split [ ',', !Ref CloudFrontAliases ]
+          - !Ref AWS::NoValue
+        Comment: !Sub "CF Distribution for ${Project}-${Environment} S3 public uploads"
+        DefaultCacheBehavior:
+          AllowedMethods: ["GET", "HEAD", "OPTIONS"]
+          Compress: true
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: !Ref ViewerProtocolPolicy
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2
+        IPV6Enabled: true
+        Origins:
+          - DomainName: !GetAtt S3Bucket.DomainName
+            Id: S3Origin
+            S3OriginConfig:
+              OriginAccessIdentity: "" # Intentionally blank so users can access S3 directly (public anyway)
+        PriceClass: !Ref PriceClass
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: !If
+            - UseCustomCloudFrontAcmCertificate
+            - !Ref AWS::NoValue
+            - true
+          AcmCertificateArn: !If
+            - UseCustomCloudFrontAcmCertificate
+            - !Ref CloudFrontAcmCertificateArn
+            - !Ref AWS::NoValue
+          SslSupportMethod: !If
+            - UseCustomCloudFrontAcmCertificate
+            - sni-only
+            - !Ref AWS::NoValue

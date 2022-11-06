@@ -1,0 +1,224 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url(./fonts/icomoon.eot?qokhvp);
+  src:  url(./fonts/icomoon.eot?qokhvp#iefix) format('embedded-opentype'),
+    url(./fonts/icomoon.ttf?qokhvp) format('truetype'),
+    url(./fonts/icomoon.woff?qokhvp) format('woff'),
+    url(./fonts/icomoon.svg?qokhvp#icomoon) format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-icon-duplicate-red:before {
+  content: "\e92d";
+  color: #ff4000;
+}
+.icon-icon-hide-password:before {
+  content: "\e900";
+  color: #526173;
+}
+.icon-icon-page-back-disabled:before {
+  content: "\e901";
+  color: #eee;
+}
+.icon-icon-page-back:before {
+  content: "\e902";
+  color: #353da4;
+}
+.icon-icon-page-forward-disabled:before {
+  content: "\e903";
+  color: #eee;
+}
+.icon-icon-page-forward:before {
+  content: "\e904";
+  color: #353da4;
+}
+.icon-icon-passwordreset:hover:before {
+  content: "\e905";
+  color: #353da4;
+}
+.icon-icon-passwordreset:before {
+  content: "\e906";
+  color: #a3a5a8;
+}
+.icon-icon-plus-hollow-disabled:before {
+  content: "\e907";
+  color: #c9c9c9;
+}
+.icon-icon-plus-hollow:before {
+  content: "\e908";
+  color: #3a4bc1;
+}
+.icon-icon-plus:before {
+  content: "\e909";
+  color: #a3a5a8;
+}
+.icon-icon-remove:hover:before {
+  content: "\e90a";
+  color: #ff4000;
+}
+.icon-icon-remove:before {
+  content: "\e90b";
+  color: #d4d7dc;
+}
+.icon-icon-report:hover:before {
+  content: "\e90c";
+  color: #353da4;
+}
+.icon-icon-report:before {
+  content: "\e90d";
+  color: #a3a5a8;
+}
+.icon-icon-search:before {
+  content: "\e90e";
+  color: #d8d8d8;
+}
+.icon-icon-shiftmanager:hover:before {
+  content: "\e90f";
+  color: #353da4;
+}
+.icon-icon-shiftmanager-selected:before {
+  content: "\e910";
+  color: #353da4;
+}
+.icon-icon-shiftmanager:before {
+  content: "\e911";
+  color: #d4d7dc;
+}
+.icon-icon-show-password:before {
+  content: "\e912";
+  color: #526173;
+}
+.icon-icon-suspend-disabled:before {
+  content: "\e913";
+  color: #a3a5a8;
+}
+.icon-icon-suspend:before {
+  content: "\e914";
+  color: #ff4000;
+}
+.icon-icon-ticket-scanning:before {
+  content: "\e915";
+  color: #fff;
+}
+.icon-icon-upload:before {
+  content: "\e916";
+  color: #526173;
+}
+.icon-icon-user:before {
+  content: "\e917";
+  color: #fff;
+}
+.icon-icon-users:before {
+  content: "\e918";
+  color: #fff;
+}
+.icon-icon-edit-white:before {
+  content: "\e919";
+  color: #fff;
+}
+.icon-icon-events:before {
+  content: "\e91a";
+  color: #fff;
+}
+.icon-icon-dashboard:hover:before {
+  content: "\e91b";
+  color: #353da4;
+}
+.icon-icon-dashboard:before {
+  content: "\e91c";
+  color: #a3a5a8;
+}
+.icon-icon-delete-disabled:before {
+  content: "\e91d";
+  color: #a3a5a8;
+}
+.icon-icon-delete-white:before {
+  content: "\e91e";
+  color: #fff;
+}
+.icon-icon-delete:before {
+  content: "\e91f";
+  color: #ff4000;
+}
+.icon-icon-download:before {
+  content: "\e920";
+  color: #fff;
+}
+.icon-icon-duplicate-disabled:before {
+  content: "\e921";
+  color: #a3a5a8;
+}
+.icon-icon-duplicate-red-disabled:before {
+  content: "\e92e";
+  color: #a3a5a8;
+}
+.icon-icon-duplicate:hover:before {
+  content: "\e922";
+  color: #353da4;
+}
+.icon-icon-duplicate:before {
+  content: "\e923";
+  color: #a3a5a8;
+}
+.icon-icon-edit:hover:before {
+  content: "\e919";
+  color: #353da4;
+}
+.icon-icon-edit:before {
+  content: "\e919";
+  color: #a3a5a8;
+}
+.icon-icon-arrowdown:before {
+  content: "\e924";
+  color: #526173;
+}
+.icon-icon-arrowleft:before {
+  content: "\e925";
+  color: #a3a5a8;
+}
+.icon-icon-arrowright:before {
+  content: "\e926";
+  color: #a3a5a8;
+}
+.icon-icon-calendar:before {
+  content: "\e927";
+  color: #526173;
+}
+.icon-icon-checkbox-enabled .path1:before {
+  content: "\e928";
+  color: rgb(82, 97, 115);
+}
+.icon-icon-checkbox-enabled .path2:before {
+  content: "\e929";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-icon-checkbox:before {
+  content: "\e92a";
+  color: #526173;
+}
+.icon-icon-clients:before {
+  content: "\e92b";
+  color: #fff;
+}
+.icon-icon-create:before {
+  content: "\e92c";
+  color: #fff;
+}

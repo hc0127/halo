@@ -1,0 +1,45 @@
+.select-input-item {
+  width: 100%;
+  height: 50px;
+  border-radius: 8px 8px 0 0;
+  -webkit-border-radius: 8px 8px 0 0;
+  -moz-border-radius: 8px 8px 0 0;
+  -ms-border-radius: 8px 8px 0 0;
+  -o-border-radius: 8px 8px 0 0;
+  border-bottom: 2px solid #20315f;
+  background: #eaedee;
+  margin-top: 15px;
+  position: relative;
+
+  & > div:first-child {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+
+    & > div,
+    & > div:hover,
+    & > div:active {
+      border-width: 0 !important;
+      border-color: rgba(0, 0, 0, 0) !important;
+      background: transparent !important;
+      outline: none !important;
+      box-shadow: none;
+      height: 100%;
+    }
+  }
+
+  &-dropdown-indicator {
+    width: 30px;
+    height: 100%;
+    background: url(./../../../images/select_arrow_down.png) no-repeat;
+    background-position: center 40%;
+    background-size: 13px;
+    box-sizing: border-box;
+  }
+
+  &-placeholder {
+    width: 90%;
+    font-size: calc(4px + 1.2vmin);
+    color: #20315f;
+  }
+}

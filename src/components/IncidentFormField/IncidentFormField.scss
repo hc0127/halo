@@ -1,0 +1,84 @@
+.IncidentFormField__label {
+  font-weight: bold;
+  display: block;
+  //margin-left:$margin-md;
+  margin-bottom: $margin-sm;
+}
+
+$border-color: #e0e0e0;
+
+.IncidentFormField__label--mandatory:after {
+  content: " *";
+  color: red;
+}
+.IncidentFormField {
+  textarea {
+    color: $color-black;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid $border-color;
+    padding: $padding-sm;
+    height: 100px;
+    margin-bottom: $margin-md;
+  }
+  input[type="text"],input[type="number"]{
+    box-sizing: border-box;
+    width: 80%;
+    padding: $padding-sm;
+    padding-left: $padding-md;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    margin-bottom: $margin-sm;
+
+    &[disabled] {
+      cursor: not-allowed;
+      background-color: lightgrey;
+    }
+  }
+  select {
+    color: $color-black;
+    line-height: 34px;
+    font-size: 16px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    height: 45px;
+    margin-bottom: $margin-sm;
+    border: 1px solid $border-color;
+    padding-left: 30px;
+    text-indent: 10px;
+    min-width: 150px;
+  }
+}
+.fieldCollection {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  & button {
+    //border: 3px solid red;
+    width: 100px;
+    flex-basis: 100px;
+  }
+}
+.colorBlock {
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.4);
+
+  &--selected {
+    box-shadow: inset 0px 0px 0px 3px rgba(0, 0, 0, 0.2);
+  }
+}
+.incident-form-field-map {
+  width: 100%;
+  box-sizing: border-box;
+  height: 300px;
+
+  &__sub-container {
+    height: 100%;
+    width: 100%;
+  }
+}

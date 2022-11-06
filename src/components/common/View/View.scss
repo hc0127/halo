@@ -1,0 +1,11 @@
+.View {
+  display: flex;
+  flex-direction: row;
+  background: grey;
+  height: calc(100% - 80px);
+  margin-left: 80px;
+}
+
+.Header ~ .View {
+  height: calc(100% - 80px); // Use variable here
+}

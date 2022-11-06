@@ -1,0 +1,37 @@
+.header {
+  height: 80px;
+  width: 100vw;
+  box-sizing: border-box;
+  padding-left: 80px;
+  padding-right: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fbfbfb;
+
+  &__logo_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__event {
+    color: #20315f;
+    margin-left: 16px;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 32px;
+  }
+
+  &__time {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+    width: 125px;
+    text-align: center;
+  }
+
+  &__buttons {
+    display: flex;
+  }
+}
